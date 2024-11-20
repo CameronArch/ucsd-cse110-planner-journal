@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals';
 import DatePicker from 'react-datepicker';
 import { getMonth, getYear } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
-import MonthChangeButtonSims from './Components/MonthChangeButton/monthChangeButtonSim'
+import MonthChangeButtonSims from './Components/MonthChangeButton/monthChangeButton'
 
 const root = ReactDOM.createRoot(
  document.getElementById('root') as HTMLElement
