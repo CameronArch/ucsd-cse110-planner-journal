@@ -9,10 +9,6 @@ on:
 jobs:
   client-tests:
     runs-on: ubuntu-latest
-    
-    defaults:
-      run:
-        working-directory: ./client # Set the working directory to client folder
 
     steps:
       - uses: actions/checkout@v4
