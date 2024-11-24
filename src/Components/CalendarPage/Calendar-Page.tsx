@@ -20,132 +20,137 @@ const CalendarPage: React.FC = () => {
         backgroundColor: '#78A1ED',
         fontWeight: 'bold'
     };
-    const flexContainer = {
-        display: 'flex',
-        justifyContent: 'center'
-    };
     
     return (
-        <>
         <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+          maxWidth: '100%',
+          overflow: 'hidden'
+        }}>
+          {/* Header */}
+          <div style={{
             display: 'grid',
             gridTemplateColumns: '120px 1fr 120px',
             alignItems: 'center',
             padding: '2px',
-            width: '100%',
-        }}>
-        <div style={{ width: '120px' }}> 
-            <LogoutButton/>
-        </div>
-        <h1 style={{
-            textAlign: 'center',
-            backgroundColor: '#D9D9D9',
-            width: '500px',  
-            height: '40px', 
-            margin: '0 auto', 
-            borderRadius: '10px',
-            fontWeight: 'normal',
-            fontStyle: 'italic',
-            display: 'flex',
-            alignItems: 'center', 
-            justifyContent: 'center',
-            position: 'relative', 
-        }}>
-            <span style={{
-                position: 'absolute',  
+            width: '100%'
+          }}>
+            <div style={{ width: '120px' }}>
+              <LogoutButton />
+            </div>
+            <h1 style={{
+              textAlign: 'center',
+              backgroundColor: '#D9D9D9',
+              width: '500px',
+              height: '40px',
+              margin: '0 auto',
+              borderRadius: '10px',
+              fontWeight: 'normal',
+              fontStyle: 'italic',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative'
+            }}>
+              <span style={{
+                position: 'absolute',
                 left: '50%',
                 top: '50%',
-                transform: 'translate(-50%, -50%)', 
-                width: 'auto',  
+                transform: 'translate(-50%, -50%)',
+                width: 'auto',
                 textAlign: 'center'
-            }}>
+              }}>
                 PLANNER
-            </span>
+              </span>
             </h1>
-            <div /> {/* Empty div to balance the space */}
-        </div>
-        <div style={{ margin: '20px 0' }}>
+            <div /> {/* Spacer */}
+          </div>
+    
+          {/* Month Navigation */}
+          <div style={{ margin: '20px 0' }}>
             <div className="arrow-container">
-                <MonthChangeButton/>
+              <MonthChangeButton />
             </div>
-        </div>
-
-            <div style={{
-                display: 'grid',
-                gridTemplateRows: 'auto repeat(5, 1fr)', // Changed to 1fr for equal sizing
-                gridTemplateColumns: 'repeat(7, 1fr)',
-                marginLeft: '1rem',
-                marginRight: '0rem',
-                height: "calc(100vh - 200px)", // Adjust based on header height
-                gap: '4px', // Add consistent gap between cells
-                minHeight: '600px' // Ensure minimum height
-            }}>
-                <div style={{
-                
+          </div>
+    
+          {/* Main Container with TaskMenu and Calendar side by side */}
+          <div style={{
+            display: 'flex',
+            padding: '0 16px',
+            gap: '16px',
+            flexGrow: 1
+          }}>
+            {/* Task Menu */}
+            {taskMenuContext.isOpen && (
+              <div style={{
                 width: '230px',
+                flexShrink: 0
+              }}>
+                <TaskMenu />
+              </div>
+            )}
+    
+            {/* Calendar Grid */}
+            <div style={{
+              display: 'grid',
+              gridTemplateRows: 'auto repeat(5, 1fr)',
+              gridTemplateColumns: 'repeat(7, 1fr)',
+              gap: '4px',
+              height: '600px',
+              flexGrow: 1,
+              marginRight: '48px'
             }}>
-                    {taskMenuContext.isOpen ? <TaskMenu/> : null}
+              {/* Day Headers */}
+              {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((day) => (
+                <div key={day} style={dayStyle}>
+                  {day}
                 </div>
-
-                <div style={{
-                    display: 'grid',
-                    gridTemplateRows: 'auto repeat(5, 6.9rem)',
-                    gridTemplateColumns: 'repeat(7, 1fr)',
-                    marginLeft: '1rem',
-                    marginRight: '3rem',
-                    height: "600px",
-                }}>
-                    <p style={dayStyle}>Sunday</p>
-                    <p style={dayStyle}>Monday</p>
-                    <p style={dayStyle}>Tuesday</p>
-                    <p style={dayStyle}>Wednesday</p>
-                    <p style={dayStyle}>Thursday</p>
-                    <p style={dayStyle}>Friday</p>
-                    <p style={dayStyle}>Saturday</p>
-                    {/* where all the day objects go */}
-                    {/* everything below to be replaced */}
-                    <DisplayDayObjects/>
-                </div>
+              ))}
+              
+              {/* Calendar Days */}
+              <DisplayDayObjects />
+            </div>
+          </div>
         </div>
-        </>
-    );
-};
-
-export default CalendarPage;
-
-const LogoutButton = () => {
-    const accountContext = useContext(AccountContext);
-    const taskMenuContext = useContext(TaskMenuContext);
-
-    const onLogout = () => {
+      );
+    };
+    
+    const LogoutButton = () => {
+      const accountContext = useContext(AccountContext);
+      const taskMenuContext = useContext(TaskMenuContext);
+    
+      const onLogout = () => {
         taskMenuContext.setIsOpen(false);
         taskMenuContext.setCurrentDate(null);
         taskMenuContext.setTasks({});
-
         accountContext.setIsLoggedIn(false);
         accountContext.setUsername(null);
         accountContext.setPassword(null);
+      };
+    
+      return (
+        <button
+          onClick={onLogout}
+          style={{
+            width: '120px',
+            height: '36px',
+            backgroundColor: '#78A1ED',
+            color: 'white',
+            borderRadius: '6px',
+            border: '1px solid transparent',
+            fontSize: '16px',
+            fontWeight: '500',
+            cursor: 'pointer',
+            transition: 'background-color 0.2s'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#6691dd'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#78A1ED'}
+        >
+          Logout
+        </button>
+      );
     };
-
-    return (
-            <button 
-                onClick={onLogout}
-                style={{
-                    width: '120px',
-                    height: '36px',
-                    backgroundColor: '#78A1ED',
-                    color: 'white',
-                    borderRadius: '6px',
-                    border: '1',
-                    fontSize: '16px',
-                    fontWeight: '500',
-                    cursor: 'pointer',
-                    transition: 'background-color 0.2s',
-                }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#6691dd'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#78A1ED'}
-            >
-                Logout
-            </button>
-    );
-};
+    
+    export default CalendarPage;
