@@ -35,6 +35,28 @@ const JournalPage: React.FC = () => {
     journalPageContext.setCurrentDate(null);
   };
 
+  function ReturnPlanner() {
+    const [isHovered, setIsHovered] = useState(false);
+  
+    return (
+      <button
+        style={{
+          backgroundColor: isHovered ? "#1fc4c5" : "#21e4e6", // Change color on hover
+          color: "black",
+          padding: '10px 15px',
+          borderRadius: '5px',
+          border: 'none',
+          cursor: 'pointer',
+        }}
+        onClick={handleReturn}
+        onMouseEnter={() => setIsHovered(true)} // Hover starts
+        onMouseLeave={() => setIsHovered(false)} // Hover ends
+      >
+        Return to Planner
+      </button>
+    );
+  }
+
   return (
     <div style={{ 
       backgroundColor: "white", 
@@ -56,17 +78,7 @@ const JournalPage: React.FC = () => {
       marginBottom: '20px'
     }}>
 
-      <button style={{
-        backgroundColor: "#21e4e6", 
-        color: "black",
-        padding: '10px 15px',
-        borderRadius: '5px',
-        border: 'none'
-      }}
-      onClick={handleReturn}
-      >
-        Return to Planner
-      </button>
+      <ReturnPlanner/>
 
       <div style={{
         display: 'flex',
@@ -166,18 +178,33 @@ const JournalPage: React.FC = () => {
           marginRight: '20px'
         }}>
             
-          <button style={{
-            backgroundColor: '#21e4e6',
-            color: 'black',
-            padding: '10px',
-            borderRadius: '5px',
-            border: 'none',
-            width: '20%',
-          }}
-          onClick={() => setDisplayCreateSection(!displayCreateSection)}
-          >
-            +
-          </button>
+            <button
+                style={{
+                backgroundColor: '#21e4e6',
+                color: 'black',
+                padding: '10px',
+                borderRadius: '5px',
+                border: 'none',
+                width: '20%',
+                fontSize: '24px', 
+                fontWeight: 'bold',
+                textAlign: 'center', 
+                lineHeight: '1', 
+                cursor: 'pointer',
+                transition: 'background-color 0.3s ease, transform 0.2s ease', 
+            }}
+                onClick={() => setDisplayCreateSection(!displayCreateSection)}
+                onMouseEnter={(e) => {
+                    (e.target as HTMLButtonElement).style.backgroundColor = '#1fc4c5'; 
+                    (e.target as HTMLButtonElement).style.transform = 'scale(1.1)';
+                }}
+                onMouseLeave={(e) => {
+                    (e.target as HTMLButtonElement).style.backgroundColor = '#21e4e6';
+                    (e.target as HTMLButtonElement).style.transform = 'scale(1)';
+                }}
+            >
+                +
+            </button>
 
             <div style={{
               display: 'flex',
