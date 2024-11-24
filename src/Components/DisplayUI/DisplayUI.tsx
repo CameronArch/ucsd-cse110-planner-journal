@@ -5,6 +5,8 @@ import { AccountContext } from "../LoginSignUpPage/AccountContext";
 import SignUp from "../LoginSignUpPage/SignUp";
 import Login from "../LoginSignUpPage/Login";
 import React from "react";
+import { MonthChangeContextProvider } from "../MonthChangeButton/MonthChangeContext";
+import { TaskMenuContextProvider } from "../TaskMenu/TaskMenuContext";
 
 const DisplayUI = () => {
     const accountContext = useContext(AccountContext);
@@ -14,7 +16,11 @@ const DisplayUI = () => {
         <>
             {accountContext.isLoggedIn ? (
                 <JournalPageContextProvider>
-                    <DisplayCalendarJournal />
+                    <TaskMenuContextProvider>
+                        <MonthChangeContextProvider>
+                            <DisplayCalendarJournal />
+                        </MonthChangeContextProvider>
+                    </TaskMenuContextProvider>
                 </JournalPageContextProvider>
             ) : showSignUp ? (
                 <SignUp setShowSignUp={setShowSignUp} />

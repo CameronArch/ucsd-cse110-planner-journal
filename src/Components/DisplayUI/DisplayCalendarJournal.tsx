@@ -13,12 +13,12 @@ const DisplayCalendarJournal = () => {
         <>
             {journalPageContext.isOpen ? 
                 <JournalPage /> 
-                : <MonthChangeContextProvider>
-                        <TaskMenuContextProvider>
-                            <RemindersManager/>
-                            <CalendarPage />
-                        </TaskMenuContextProvider>
-                </MonthChangeContextProvider>
+                : 
+                <>
+                    <RemindersManager />
+                    <CalendarPage />
+                </>
+                        
             }
         </>
     );
