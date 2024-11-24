@@ -39,17 +39,19 @@ const SignUp: React.FC<SignUpProps> = ({ setShowSignUp }) => {
         <form onSubmit={handleSignUp} className="auth-form">
         <h2>Sign Up</h2>
         <div className="form-group">
-          <label>Create Username</label>
+          <label htmlFor='create username'>Create Username</label>
           <input
             type="text"
+            id="create username"
             value={newUsername}
             onChange={(e) => setNewUsername(e.target.value)}
           />
         </div>
         <div className="form-group">
-          <label>Create Password</label>
+          <label htmlFor='create password'>Create Password</label>
           <input
             type="password"
+            id="create password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />

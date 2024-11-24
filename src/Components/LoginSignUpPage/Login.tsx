@@ -47,17 +47,19 @@ const Login: React.FC<LoginProps> = ({ setShowSignUp }) => {
         <form onSubmit={handleLogin} className="auth-form">
         <h2>Log In</h2>
         <div className="form-group">
-          <label>Username</label>
+        <label htmlFor="username">Username</label>
           <input
             type="text"
+            id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
         <div className="form-group">
-          <label>Password</label>
+        <label htmlFor="password">Password</label>
           <input
             type="password"
+            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
