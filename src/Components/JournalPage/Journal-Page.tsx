@@ -22,8 +22,17 @@ const JournalPage: React.FC = () => {
     setDisplayCreateSection(false);
   }
 
-  const handleChangeTextSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTextSize(Number(e.target.value));
+  const handleChangeTextSize = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const numericValue = Number(e.target.value);
+  
+    if (numericValue < 11) {
+      return setTextSize(11);
+    }
+    if (numericValue > 25) {
+      return setTextSize(25);
+    }
+  
+    setTextSize(numericValue);
   };
 
   const handleSectionSelection = (section: Section) => {
@@ -130,12 +139,13 @@ const JournalPage: React.FC = () => {
             }}>
               Notes Text Size: 
             </h3>
-            <select value={textSize} onChange={handleChangeTextSize}>
-              <option value={12}>12</option>
-              <option value={14}>14</option>
-              <option value={16}>16</option>
-              <option value={18}>18</option>
-            </select>
+            <input
+              type="number"
+              value={textSize}
+              onChange={handleChangeTextSize}
+              min={11}
+              max={25}
+              />
           </div>
         </div>
       </div>

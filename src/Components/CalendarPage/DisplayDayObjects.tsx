@@ -12,9 +12,18 @@ const DayObjects = () => {
     }
 
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const firstDayOfWeek = new Date(currentYear, currentMonth, 1).getDay();
+
 
     return (
         <>
+            {Array.from({ length: firstDayOfWeek }, (_, i) => (
+                <div
+                    key={`placeholder-${i}`}
+                    className="dayObject placeholder"
+                />
+            ))}
+
             {Array.from({ length: daysInMonth }, (_, i) => (
                 <div key={i}>
                     <DayObject currentDate={new Date(currentYear, currentMonth, i + 1)} />

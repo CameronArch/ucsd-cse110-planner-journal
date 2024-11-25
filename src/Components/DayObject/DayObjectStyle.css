@@ -10,6 +10,12 @@
     border: 1px solid black;
     box-sizing: border-box;
   }
+
+  .dayObject.placeholder {
+    background-color: #c0c0c0;
+    opacity: 0.5; 
+    border: none;
+  }
   
   .dayObject__header {
     margin-bottom: 5px;
