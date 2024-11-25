@@ -4,6 +4,7 @@ import TaskMenu from '../TaskMenu/TaskMenu';
 import DisplayDayObjects from './DisplayDayObjects';
 import { AccountContext } from '../LoginSignUpPage/AccountContext';
 import MonthChangeButton from '../MonthChangeButton/monthChangeButton';
+import { JournalPageContext } from '../JournalPage/JournalPageContext';
 
 const CalendarPage: React.FC = () => {
     const taskMenuContext = useContext(TaskMenuContext);
@@ -120,6 +121,7 @@ const CalendarPage: React.FC = () => {
     const LogoutButton = () => {
       const accountContext = useContext(AccountContext);
       const taskMenuContext = useContext(TaskMenuContext);
+      const journalPageContext = useContext(JournalPageContext);
     
       const onLogout = () => {
         taskMenuContext.setIsOpen(false);
@@ -128,6 +130,7 @@ const CalendarPage: React.FC = () => {
         accountContext.setIsLoggedIn(false);
         accountContext.setUsername(null);
         accountContext.setPassword(null);
+        journalPageContext.setJournalEntries({});
       };
     
       return (

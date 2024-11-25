@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 import LogoutButton from '../../Components/CalendarPage/Calendar-Page';
 import { AccountContext } from '../../Components/LoginSignUpPage/AccountContext';
 import { TaskMenuContext } from '../../Components/TaskMenu/TaskMenuContext';
+import { JournalPageContext } from '../../Components/JournalPage/JournalPageContext';
 
 
 test('calls context methods on logout', () => {
@@ -29,12 +30,23 @@ test('calls context methods on logout', () => {
         setTasks: jest.fn(),
     };
 
+    const mockJournalPageContext = {
+        currentDate: null,
+        setCurrentDate: jest.fn(),
+        isOpen: false,
+        setIsOpen: jest.fn(),
+        journalEntries: {},
+        setJournalEntries: jest.fn(),
+    };
+
     const renderWithProviders = () =>
         render(
             <AccountContext.Provider value={mockAccountContext}>
-                <TaskMenuContext.Provider value={mockTaskMenuContext}>
-                    <LogoutButton />
-                </TaskMenuContext.Provider>
+                <JournalPageContext.Provider value={mockJournalPageContext}>
+                    <TaskMenuContext.Provider value={mockTaskMenuContext}>
+                        <LogoutButton />
+                    </TaskMenuContext.Provider>
+                </JournalPageContext.Provider>
             </AccountContext.Provider>
         );
 
@@ -52,4 +64,7 @@ test('calls context methods on logout', () => {
     expect(mockAccountContext.setIsLoggedIn).toHaveBeenCalledWith(false);
     expect(mockAccountContext.setUsername).toHaveBeenCalledWith(null);
     expect(mockAccountContext.setPassword).toHaveBeenCalledWith(null);
+
+    // JournalPageContext methods were called
+    expect(mockJournalPageContext.setJournalEntries).toHaveBeenCalledWith({});
   });
