@@ -14,6 +14,8 @@ test('calls context methods on logout', () => {
         setIsLoggedIn: jest.fn(),
         setUsername: jest.fn(),
         setPassword: jest.fn(),
+        credentials: new Map(),
+        setCredentials: jest.fn(),
     };
     
     const mockTaskMenuContext = {

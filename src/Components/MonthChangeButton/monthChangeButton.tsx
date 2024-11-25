@@ -1,11 +1,8 @@
 
 import React, { useContext } from "react";
 import { useState } from 'react'
-import ReactDOM from "react-dom";
 import { months } from "./months";
 import { useDynamicYears } from "./years";
-import DatePicker from 'react-datepicker';
-import { getMonth, getYear } from "date-fns";
 import './monthChangeButton.css'
 import { MonthChangeContext } from "./MonthChangeContext";
 

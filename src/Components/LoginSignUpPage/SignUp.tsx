@@ -1,31 +1,72 @@
-// src/SignUp.tsx
-import React from 'react';
-import './Auth.css';
+import React, { useState, useContext } from 'react';
+import { AccountContext } from './AccountContext';
+import AlertBanner from './AlertBanner';
 
 interface SignUpProps {
-    setShowSignUp: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowSignUp: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SignUp: React.FC<SignUpProps> = ({ setShowSignUp }) => {
-  return (
-    <div className="auth-container">
-      <h2>Sign Up</h2>
-      <form>
-        <div className="input-container">
-          <label htmlFor="createUsername">Create Username</label>
-          <input type="text" id="createUsername" name="createUsername" />
+    const [newUsername, setNewUsername] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [alert, setAlert] = useState<{ message: string; type: 'error' | 'success' } | null>(null);
+    const accountContext = useContext(AccountContext);
+  
+    const handleSignUp = async (event: React.FormEvent) => {
+      event.preventDefault();
+      if (!newUsername || !newPassword) {
+        setAlert({ message: 'Please fill in both fields.', type: 'error' });
+        return;
+      }
+  
+      if (accountContext.credentials.has(newUsername)) {
+        setAlert({ message: 'Username already exists. Please choose another.', type: 'error' });
+        return;
+      }
+  
+      accountContext.setCredentials((prev) => {
+        const updatedCredentials = new Map(prev);
+        updatedCredentials.set(newUsername, newPassword);
+        return updatedCredentials;
+      });
+      
+      setAlert({ message: 'Account created successfully!', type: 'success' });
+    };
+  
+    return (
+      <div className="auth-container">
+        {alert && <AlertBanner message={alert.message} type={alert.type} onClose={() => setAlert(null)} />}
+        <form onSubmit={handleSignUp} className="auth-form">
+        <h2>Sign Up</h2>
+        <div className="form-group">
+          <label htmlFor='create username'>Create Username</label>
+          <input
+            type="text"
+            id="create username"
+            value={newUsername}
+            onChange={(e) => setNewUsername(e.target.value)}
+          />
         </div>
-        <div className="input-container">
-          <label htmlFor="createPassword">Create Password</label>
-          <input type="password" id="createPassword" name="createPassword" />
+        <div className="form-group">
+          <label htmlFor='create password'>Create Password</label>
+          <input
+            type="password"
+            id="create password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
         </div>
         <button type="submit">Create Account</button>
+        <button
+          type="button"
+          onClick={() => setShowSignUp(false)}
+          className="link-button"
+        >
+          Back to Log In
+        </button>
       </form>
-      <p className="link">
-        <span onClick={() => setShowSignUp(false)} className="link-button">Back to Log In</span>
-      </p>
-    </div>
-  );
-};
+      </div>
+    );
+  };
 
 export default SignUp;
