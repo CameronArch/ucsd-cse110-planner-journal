@@ -43,5 +43,30 @@ describe("Journal Page Functionality", () => {
         expect(mockSetIsOpen).toHaveBeenCalledWith(false);
 
     });
-  
+
+    test("Description Input", () => {
+      render(<JournalPage />);
+
+      const addSectionButton = screen.getByText("+");
+
+      fireEvent.click(addSectionButton);
+
+      const sectionTitleInput = screen.getByPlaceholderText("Section Name");
+
+      fireEvent.change(sectionTitleInput, { target: { value: "Test Section" } });
+
+      const sectionSubmitButton = screen.getByText("Submit");
+
+      fireEvent.click(sectionSubmitButton);
+
+      const sectionTitle = screen.getByText("Test Section");
+
+      expect(sectionTitle).toBeInTheDocument();
+
+      fireEvent.click(sectionTitle);
+
+      fireEvent.change(screen.getByPlaceholderText("Write your Test Section entry here..."), { target: { value: "Test Description" } });
+
+      expect(screen.getByDisplayValue("Test Description")).toBeInTheDocument();
+    });
 });

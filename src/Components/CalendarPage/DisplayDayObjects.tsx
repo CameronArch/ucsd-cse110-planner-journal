@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import DayObject from "../DayObject/DayObject";
 import { MonthChangeContext } from "../MonthChangeButton/MonthChangeContext";
 
