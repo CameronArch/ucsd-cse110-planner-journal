@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useState } from "react";
 import CreateSection from "./Create-Section" 
 import { JournalPageContext } from './JournalPageContext';
@@ -6,21 +6,59 @@ import { JournalPageContext } from './JournalPageContext';
 interface Section {
   name: string;
   color: string;
-  text?: string; // Added to store text for each section
+  text?: string;
 }
 
-const JournalPage: React.FC = () => {
-  const journalPageContext = useContext(JournalPageContext);
 
-  let [sections, setSections] = useState<Section[]>([]);
+const JournalPage: React.FC = () => {
+  const { 
+    currentDate, 
+    setCurrentDate,
+    setIsOpen, 
+    journalEntries, 
+    setJournalEntries 
+  } = useContext(JournalPageContext);
+
   const [displayCreateSection, setDisplayCreateSection] = useState(false);
   const [textSize, setTextSize] = useState(14);
   const [sectionSelection, setSectionSelection] = useState<Section | null>(null);
+  const [currentSections, setCurrentSections] = useState<Section[]>([]);
 
+
+  useEffect(() => {
+    if (currentDate) {
+      const dateString = currentDate.toISOString().split('T')[0];
+      const existingEntry = journalEntries[dateString];
+      
+      if (existingEntry) {
+        setCurrentSections(existingEntry.sections);
+      } else {
+        
+        setCurrentSections([]);
+        setJournalEntries({
+          ...journalEntries,
+          [dateString]: { sections: [] }
+        });
+      }
+    }
+  }, [currentDate, journalEntries, setJournalEntries]);
+  
   const handleAddSection = (newSection: Section) => {
-    setSections([...sections, { ...newSection, text: '' }]);
+    if (!currentDate) return;
+
+    const dateString = currentDate.toISOString().split('T')[0];
+    const updatedSections = [...currentSections, { ...newSection, text: '' }];
+    
+    setCurrentSections(updatedSections);
+    
+    
+    setJournalEntries({
+      ...journalEntries,
+      [dateString]: { sections: updatedSections }
+    });
+    
     setDisplayCreateSection(false);
-  }
+  };
 
   const handleChangeTextSize = (e: React.ChangeEvent<HTMLInputElement>) => {
     const numericValue = Number(e.target.value);
@@ -40,20 +78,27 @@ const JournalPage: React.FC = () => {
   };
 
   const handleTextChange = (text: string) => {
-    if (sectionSelection) {
-      const updatedSections = sections.map(section => 
-        section.name === sectionSelection.name 
-          ? { ...section, text } 
-          : section
-      );
-      setSections(updatedSections);
-      setSectionSelection({ ...sectionSelection, text });
-    }
+    if (!currentDate || !sectionSelection) return;
+
+    const dateString = currentDate.toISOString().split('T')[0];
+    const updatedSections = currentSections.map(section => 
+      section.name === sectionSelection.name 
+        ? { ...section, text } 
+        : section
+    );
+
+    setCurrentSections(updatedSections);
+    setSectionSelection({ ...sectionSelection, text });
+
+    setJournalEntries({
+      ...journalEntries,
+      [dateString]: { sections: updatedSections }
+    });
   };
 
   const handleReturn = () => {
-    journalPageContext.setIsOpen(false);
-    journalPageContext.setCurrentDate(null);
+    setIsOpen(false);
+    setCurrentDate(null);
   };
 
   function ReturnPlanner() {
@@ -120,7 +165,7 @@ const JournalPage: React.FC = () => {
               fontWeight: 'Bold',
               margin: 0,
             }}>
-              JOURNAL ENTRY: {journalPageContext.currentDate?.toDateString()} 
+              JOURNAL ENTRY: {currentDate?.toDateString()} 
             </h1>
           </div>
 
@@ -230,7 +275,7 @@ const JournalPage: React.FC = () => {
               padding: '10px',
               borderRadius: '5px'
             }}>
-              {sections.map((section, index) => (
+              {currentSections.map((section, index) => (
                 <div
                   key={index}
                   style={{
@@ -243,6 +288,7 @@ const JournalPage: React.FC = () => {
                     border: sectionSelection?.name === section.name ? '2px solid #21e4e6' : 'none'
                   }}
                   onClick={() => handleSectionSelection(section)}
+                  data-testid={`section-${section.name}`}
                 >
                   {section.name}
                 </div>

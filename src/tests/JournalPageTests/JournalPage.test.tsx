@@ -2,6 +2,11 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom';
 import JournalPage from "../../Components/JournalPage/Journal-Page";
 import { JournalPageContext } from "../../Components/JournalPage/JournalPageContext";
+import React from "react";
+
+type JournalEntriesMap = {
+  [key: string]: any;
+};
 
 jest.mock('@uiw/react-color', () => ({
     Colorful: ({ color, onChange }: { color: string, onChange: (color: string) => void }) => (
@@ -17,15 +22,19 @@ jest.mock('@uiw/react-color', () => ({
 }));
 
 describe("Journal Page Functionality", () => {
+    
     test("Return to Planner Button", () => {
         const mockSetCurrentDate = jest.fn();
         const mockSetIsOpen = jest.fn();
-
+        
+        const mockSetJournalEntries = jest.fn();
         const contextValue = {
             currentDate: new Date(),
             setCurrentDate: mockSetCurrentDate,
             isOpen: true,
-            setIsOpen: mockSetIsOpen
+            setIsOpen: mockSetIsOpen,
+            journalEntries: {},
+            setJournalEntries: mockSetJournalEntries
         };
 
         render(
@@ -45,7 +54,23 @@ describe("Journal Page Functionality", () => {
     });
 
     test("Description Input", () => {
-      render(<JournalPage />);
+        const mockSetCurrentDate = jest.fn();
+        const mockSetIsOpen = jest.fn();
+
+        const mockSetJournalEntries = jest.fn();
+        const contextValue = {
+            currentDate: new Date(),
+            setCurrentDate: mockSetCurrentDate,
+            isOpen: true,
+            setIsOpen: mockSetIsOpen,
+            journalEntries: {},
+            setJournalEntries: mockSetJournalEntries
+        };
+      render(
+        <JournalPageContext.Provider value={contextValue}>
+            <JournalPage />
+        </JournalPageContext.Provider>
+    );
 
       const addSectionButton = screen.getByText("+");
 
