@@ -22,11 +22,9 @@ const ReminderPopup: React.FC<ReminderPopupProps> = ({ taskName, onClose }) => {
 
     // Listen for custom 'unmute' event
     window.addEventListener('unmute', checkMutedStatus);
-    window.addEventListener('storage', checkMutedStatus);
 
     return () => {
       window.removeEventListener('unmute', checkMutedStatus);
-      window.removeEventListener('storage', checkMutedStatus);
     };
   }, []);
 
@@ -39,6 +37,7 @@ const ReminderPopup: React.FC<ReminderPopupProps> = ({ taskName, onClose }) => {
     localStorage.setItem('reminderMuted', 'true');
     setMuted(true);
     setVisible(false);
+    window.dispatchEvent(new Event('mute'));
     onClose();
   };
 

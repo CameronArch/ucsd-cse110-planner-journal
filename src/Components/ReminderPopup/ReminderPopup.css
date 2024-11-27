@@ -1,7 +1,7 @@
 .reminder-popup {
   position: fixed; 
-  top: 20px;
-  right: 20px;
+  top: 5px;
+  right: 5px;
   width: 250px;
   background-color: #fff;
   border: 1px solid #ccc;

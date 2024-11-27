@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState, useRef, useCallback } from 'react';
 import { TaskMenuContext } from '../../Components/TaskMenu/TaskMenuContext';
 import ReminderPopup from './ReminderPopup';
 import { Task } from '../../Types/TaskType';
@@ -8,13 +8,15 @@ const RemindersManager: React.FC = () => {
   const [activeReminderTasks, setActiveReminderTasks] = useState<Task[]>([]);
   const timersRef = useRef<{ [key: string]: NodeJS.Timeout }>({});
 
-  useEffect(() => {
+  const updateActiveReminders = useCallback(() => {
     // Clear existing timers
     Object.values(timersRef.current).forEach(clearTimeout);
     timersRef.current = {};
 
     const now = new Date();
     console.log('Current time:', now.toString());
+
+    const newActiveReminderTasks: Task[] = [];
 
     Object.entries(tasks).forEach(([dateKey, taskList]) => {
       taskList.forEach(task => {
@@ -32,13 +34,19 @@ const RemindersManager: React.FC = () => {
             console.log('Scheduling reminder in', timeUntilReminder / 1000, 'seconds');
             const timerId = setTimeout(() => {
               console.log(`Displaying reminder for task: ${task.name}`);
-              setActiveReminderTasks(prev => [...prev, task]);
+              // Only display if not muted
+              if (localStorage.getItem('reminderMuted') !== 'true') {
+                setActiveReminderTasks(prev => [...prev, task]);
+              }
             }, timeUntilReminder);
             timersRef.current[`${dateKey}-${task.id}`] = timerId;
           } else if (now >= reminderDateTime && now <= taskDateTime) {
             // Reminder time has passed, but task hasn't started yet
             console.log('Reminder time has passed, displaying reminder immediately');
-            setActiveReminderTasks(prev => [...prev, task]);
+            // Only display if not muted
+            if (localStorage.getItem('reminderMuted') !== 'true') {
+              newActiveReminderTasks.push(task);
+            }
           } else {
             console.log('Reminder time has passed and task has already started or ended');
           }
@@ -46,10 +54,28 @@ const RemindersManager: React.FC = () => {
       });
     });
 
+    setActiveReminderTasks(newActiveReminderTasks);
+  }, [tasks]);
+
+  useEffect(() => {
+    updateActiveReminders();
+
     return () => {
       Object.values(timersRef.current).forEach(clearTimeout);
     };
-  }, [tasks]);
+  }, [updateActiveReminders]);
+
+  useEffect(() => {
+    const handleUnmute = () => {
+      updateActiveReminders();
+    };
+
+    window.addEventListener('unmute', handleUnmute);
+
+    return () => {
+      window.removeEventListener('unmute', handleUnmute);
+    };
+  }, [updateActiveReminders]);
 
   const handleCloseReminder = (taskId: number) => {
     setActiveReminderTasks(prev => prev.filter(task => task.id !== taskId));
@@ -58,7 +84,11 @@ const RemindersManager: React.FC = () => {
   return (
     <>
       {activeReminderTasks.map(task => (
-        <ReminderPopup key={task.id} taskName={task.name} onClose={() => handleCloseReminder(task.id)} />
+        <ReminderPopup
+          key={task.id}
+          taskName={task.name}
+          onClose={() => handleCloseReminder(task.id)}
+        />
       ))}
     </>
   );
