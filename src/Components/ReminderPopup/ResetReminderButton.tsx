@@ -1,5 +1,6 @@
+// ResetReminderButton.tsx
 import React, { useState, useEffect } from 'react';
-import './ResetReminderButton.css'
+import './ResetReminderButton.css';
 
 const ResetReminderButton: React.FC = () => {
   const [muted, setMuted] = useState(false);
@@ -11,12 +12,12 @@ const ResetReminderButton: React.FC = () => {
     };
 
     checkMutedStatus();
+    window.addEventListener('mute', checkMutedStatus); // Listen for 'mute' event
     window.addEventListener('unmute', checkMutedStatus);
-    window.addEventListener('storage', checkMutedStatus);
 
     return () => {
+      window.removeEventListener('mute', checkMutedStatus);
       window.removeEventListener('unmute', checkMutedStatus);
-      window.removeEventListener('storage', checkMutedStatus);
     };
   }, []);
 

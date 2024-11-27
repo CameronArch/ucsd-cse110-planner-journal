@@ -68,7 +68,12 @@ const CreateSection: React.FC<CreateSectionProps> = ({ onCreateSection }) => {
                 width: '80%',
                 borderRadius: '5px',
                 padding: '5px',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'background-color 0.3s ease',
               }}
+              onMouseEnter={(e) => (e.target as HTMLButtonElement).style.backgroundColor = "#1fc4c5"}
+              onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = "#21e4e6"}
             >
               Select Color
             </button>
@@ -79,8 +84,14 @@ const CreateSection: React.FC<CreateSectionProps> = ({ onCreateSection }) => {
                 color: "black", 
                 width: '50%',
                 borderRadius: '5px',
+                padding: '5px',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'background-color 0.3s ease',
               }}
-              onClick={() => console.log({sectionName, hex})}
+              onClick={() => console.log({ sectionName, hex })}
+              onMouseEnter={(e) => (e.target as HTMLButtonElement).style.backgroundColor = "#1fc4c5"}
+              onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = "#21e4e6"}
             >
               Submit
             </button>

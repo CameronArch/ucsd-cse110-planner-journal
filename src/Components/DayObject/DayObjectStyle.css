@@ -1,7 +1,7 @@
 .dayObject {
     display: flex;
     flex-direction: column;
-    min-width: 178px;
+    min-width: 175px;
     min-height: 110px;
     padding: 5px;
     background: #d3d3d3; 
@@ -9,6 +9,12 @@
     position: relative;
     border: 1px solid black;
     box-sizing: border-box;
+  }
+
+  .dayObject.placeholder {
+    background-color: #c0c0c0;
+    opacity: 0.5; 
+    border: none;
   }
   
   .dayObject__header {

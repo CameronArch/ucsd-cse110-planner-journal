@@ -2,9 +2,8 @@ import { useContext } from "react";
 import { JournalPageContext } from "../JournalPage/JournalPageContext";
 import CalendarPage from "../CalendarPage/Calendar-Page";
 import JournalPage from "../JournalPage/Journal-Page";
-import { TaskMenuContextProvider } from "../TaskMenu/TaskMenuContext";
-import { MonthChangeContextProvider } from "../MonthChangeButton/MonthChangeContext";
 import RemindersManager from "../ReminderPopup/RemindersManager"
+import ResetReminderButton from "../ReminderPopup/ResetReminderButton";
 
 const DisplayCalendarJournal = () => {
     const journalPageContext = useContext(JournalPageContext);
@@ -13,12 +12,13 @@ const DisplayCalendarJournal = () => {
         <>
             {journalPageContext.isOpen ? 
                 <JournalPage /> 
-                : <MonthChangeContextProvider>
-                        <TaskMenuContextProvider>
-                            <RemindersManager/>
-                            <CalendarPage />
-                        </TaskMenuContextProvider>
-                </MonthChangeContextProvider>
+                : 
+                <>
+                    <RemindersManager />
+                    <ResetReminderButton />
+                    <CalendarPage />
+                </>
+                        
             }
         </>
     );
