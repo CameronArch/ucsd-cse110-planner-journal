@@ -1,18 +1,20 @@
+/* ResetReminderButton.css */
 .reset-reminder-button {
-    position: fixed;
-    top: 20px; /* Adjust as needed */
-    right: 20px;
-    background-color: #6c757d;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 8px 12px;
-    cursor: pointer;
-    z-index: 999;
-  }
-  
-  .reset-reminder-button:hover {
-    background-color: #5a6268;
-  }
+  position: absolute; /* Positions the button relative to the viewport */
+  top: 5px;       /* 20px from the top */
+  right: 5px;     /* 20px from the right */
+  width: 120px;
+  height: 36px;
+  background-color: #28a745; /* Green background */
+  color: white;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
 
-  
+.reset-reminder-button:hover {
+  background-color: #218838; /* Darker green on hover */
+}
