@@ -159,7 +159,7 @@ describe("DayObject Functionality", () => {
         const mockSetIsOpen = jest.fn();
         const mockSetCurrentDate = jest.fn();
         render(
-            <JournalPageContext.Provider value={{ isOpen: false, setIsOpen: mockSetIsOpen, currentDate: null, setCurrentDate: mockSetCurrentDate }}>
+            <JournalPageContext.Provider value={{ journalEntries: {}, setJournalEntries: jest.fn(), isOpen: false, setIsOpen: mockSetIsOpen, currentDate: null, setCurrentDate: mockSetCurrentDate }}>
                 <DayObject currentDate={new Date(2024, 10, 11)} />
             </JournalPageContext.Provider>
         );
