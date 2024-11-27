@@ -15,7 +15,8 @@ const JournalPage: React.FC = () => {
   let [ sections, setSections ] = useState<Section[]>([]);
   const [ displayCreateSection, setDisplayCreateSection ] = useState(false);
   const [ textSize, setTextSize ] = useState(14);
-  const [ sectionSelection, setSectionSelection ] = useState<String>()
+  const [ sectionSelection, setSectionSelection ] = useState<String>();
+  const [ journalContent, setJournalContent ] = useState("");
 
   const handleAddSection = (newSection: Section) => {
     setSections([...sections, newSection]);
@@ -33,6 +34,11 @@ const JournalPage: React.FC = () => {
   const handleReturn = () => {
     journalPageContext.setIsOpen(false);
     journalPageContext.setCurrentDate(null);
+  };
+
+  const handleJournalSubmission = (event: React.FormEvent<HTMLFormElement>) => {
+    event?.preventDefault();
+    console.log("submitted");
   };
 
   return (
@@ -209,6 +215,35 @@ const JournalPage: React.FC = () => {
             fontSize: textSize
           }}>
             {sectionSelection}
+          </div>
+          <div>
+            <form onSubmit={(event) => handleJournalSubmission(event)}>
+              <input
+                type="text"
+                value={journalContent}
+                onChange={(e) => {
+                  setJournalContent(e.target.value);
+                }}
+                style={{
+                  width: '60vw',
+                  height: '60vh',
+                  borderRadius: "5px",
+                }}
+                placeholder="What's on your mind?"
+              />
+              <button
+              type="submit"
+              style={{ 
+                backgroundColor: "#21e4e6", 
+                color: "black", 
+                width: '50%',
+                borderRadius: '5px',
+              }}
+              onClick={() => console.log("clicked submit")}
+            >
+              Submit
+            </button>
+            </form>
           </div>
         </div>
       </div>
