@@ -9,11 +9,11 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@uiw/react-color": "^2.3.2",
+    "aws-amplify": "^6.10.0",
     "react": "^18.3.1",
     "react-datepicker": "^7.5.0",
     "react-dom": "^18.3.1",
     "react-scripts": "^5.0.1",
-    "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -41,7 +41,15 @@
     ]
   },
   "devDependencies": {
+    "@aws-amplify/backend": "^1.8.0",
+    "@aws-amplify/backend-cli": "^1.4.2",
     "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.0.1"
+    "@testing-library/react": "^16.0.1",
+    "aws-cdk": "^2.171.0",
+    "aws-cdk-lib": "^2.171.0",
+    "constructs": "^10.4.2",
+    "esbuild": "^0.24.0",
+    "tsx": "^4.19.2",
+    "typescript": "^4.9.5"
   }
 }
