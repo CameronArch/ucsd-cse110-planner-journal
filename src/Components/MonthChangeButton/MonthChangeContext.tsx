@@ -1,24 +1,28 @@
 import React from "react";
 
 interface MonthChangeContextType {
-    currentYear: number | null;
-    setCurrentYear: React.Dispatch<React.SetStateAction<number | null>>;
-    currentMonth: number | null;
-    setCurrentMonth: React.Dispatch<React.SetStateAction<number | null>>;
+    currentYear: number;
+    setCurrentYear: React.Dispatch<React.SetStateAction<number>>;
+    currentMonth: number;
+    setCurrentMonth: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const initialMonthChange: MonthChangeContextType = {
-    currentYear: null,
+    currentYear: 0,
     setCurrentYear: () => {},
-    currentMonth: null,
+    currentMonth: 0,
     setCurrentMonth: () => {},
 };
 
 export const MonthChangeContext = React.createContext<MonthChangeContextType>(initialMonthChange);
 
 export const MonthChangeContextProvider = (props: any) => {
-    const [currentYear, setCurrentYear] = React.useState<number| null>(null);
-    const [currentMonth, setCurrentMonth] = React.useState<number | null>(null);
+    const today = new Date();
+    const initialYear = today.getFullYear();
+    const initialMonth = today.getMonth();
+
+    const [currentYear, setCurrentYear] = React.useState<number>(initialYear);
+    const [currentMonth, setCurrentMonth] = React.useState<number>(initialMonth);
 
     return (
         <MonthChangeContext.Provider value={{currentYear, setCurrentYear, currentMonth, setCurrentMonth}}>

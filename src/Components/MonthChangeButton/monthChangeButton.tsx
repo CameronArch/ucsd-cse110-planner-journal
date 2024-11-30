@@ -1,5 +1,5 @@
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from 'react'
 import { months } from "./months";
 import { useDynamicYears } from "./years";
@@ -12,9 +12,12 @@ const MonthChangeButton: React.FC = () =>{
   const monthChangeContext = useContext(MonthChangeContext);
 
   
-  const [selectedDate, setSelectedDate] = useState(new Date()); // Default to current date
-  monthChangeContext.setCurrentMonth(selectedDate.getMonth());
-  monthChangeContext.setCurrentYear(selectedDate.getFullYear());
+  const [selectedDate, setSelectedDate] = useState(new Date(monthChangeContext.currentYear, monthChangeContext.currentMonth));
+
+  useEffect(() => {
+    monthChangeContext.setCurrentMonth(selectedDate.getMonth());
+    monthChangeContext.setCurrentYear(selectedDate.getFullYear());
+  }, [selectedDate, monthChangeContext]);
 
   const dynamicYears = useDynamicYears({
     startingYear: 2015,
@@ -49,11 +52,6 @@ const MonthChangeButton: React.FC = () =>{
     } else {
       setSelectedDate(new Date(currentYear, currentMonth + 1));  // Otherwise just increase the month
     }
-
-
-    monthChangeContext.setCurrentMonth(selectedDate.getMonth());
-    monthChangeContext.setCurrentYear(selectedDate.getFullYear());
-
   };
 
   const decreaseMonth = () => {
@@ -66,11 +64,6 @@ const MonthChangeButton: React.FC = () =>{
       
       setSelectedDate(new Date(currentYear, currentMonth - 1)); // Otherwise just decrease the month
     }
-
-
-    monthChangeContext.setCurrentMonth(selectedDate.getMonth());
-    monthChangeContext.setCurrentYear(selectedDate.getFullYear());
-
   };
 
 
@@ -86,7 +79,7 @@ const MonthChangeButton: React.FC = () =>{
 
 
        <label htmlFor="left-arrow" hidden>decrease month</label>
-           <button className="arrow-button left-arrow" aria-label="Decrease Month" onClick={decreaseMonth} >
+           <button className="arrow-button left-arrow" id="left-arrow" aria-label="Decrease Month" onClick={decreaseMonth} >
         <span className="arrow" />
         </button> 
 
@@ -138,7 +131,7 @@ const MonthChangeButton: React.FC = () =>{
        <div className="arrow-container" >
 
        <label htmlFor="right-arrow" hidden>increase month</label>
-        <button className="arrow-button right-arrow"  aria-label="Increase Month" onClick={increaseMonth}>
+        <button className="arrow-button right-arrow" id="right-arrow" aria-label="Increase Month" onClick={increaseMonth}>
         <span className="arrow" />
         </button>
         </div>
