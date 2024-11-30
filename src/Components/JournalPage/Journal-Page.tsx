@@ -204,7 +204,7 @@ const JournalPage: React.FC = () => {
         {displayCreateSection && (
           <div style={{
             display: 'flex',
-            height: '20%',
+            height: 'fit-content',
             backgroundColor: "#d8d8d8", 
             borderRadius: '10px',
             padding: '10px',
@@ -265,7 +265,6 @@ const JournalPage: React.FC = () => {
             >
               +
             </button>
-
             <div style={{
               display: 'flex',
               flexDirection: 'column',
@@ -302,7 +301,7 @@ const JournalPage: React.FC = () => {
             flexDirection: 'column',
             gap: '20px'
           }}>
-            {sectionSelection && (
+            {sectionSelection ? (
               <>
                 <div style={{
                   fontSize: textSize,
@@ -332,6 +331,20 @@ const JournalPage: React.FC = () => {
                   placeholder={`Write your ${sectionSelection.name} entry here...`}
                 />
               </>
+            ) : (
+              <div style={{
+                flex: 1,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontSize: '18px',
+                color: '#666',
+                backgroundColor: 'white',
+                borderRadius: '5px',
+                padding: '20px'
+              }}>
+                Create/Select Section to Write Entry
+              </div>
             )}
           </div>
         </div>

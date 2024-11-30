@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, CSSProperties } from "react";
 import ColorPicker from "./ColorPicker"
 
 interface Section {
@@ -26,84 +26,122 @@ const CreateSection: React.FC<CreateSectionProps> = ({ onCreateSection }) => {
       setDisplayColorPicker(false);
     }
   };
+ 
+  const containerStyle: CSSProperties = {
+    backgroundColor: "#d8d8d8",
+    padding: "16px",
+    borderRadius: "10px",
+    width: "160px",
+    boxSizing: 'border-box'
+  };
+
+  // Remove flexbox from form content to prevent spacing issues
+  const formStyle: CSSProperties = {
+    width: '100%',
+  };
+
+  const labelStyle: CSSProperties = {
+    display: 'block',
+    fontSize: "16px",
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: '10px',
+    textAlign: 'center'
+  };
+
+  const inputStyle: CSSProperties = {
+    width: '100%',
+    padding: '6px',
+    borderRadius: "5px",
+    border: '1px solid #ccc',
+    textAlign: 'center',
+    fontSize: '14px',
+    boxSizing: 'border-box',
+    marginBottom: '10px'
+  };
+
+  const buttonStyle: CSSProperties = {
+    backgroundColor: "#21e4e6",
+    color: "black",
+    width: '100%',
+    borderRadius: '5px',
+    padding: '6px',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '14px',
+    boxSizing: 'border-box',
+    marginBottom: '10px'
+  };
+
+  const colorButtonStyle: CSSProperties = {
+    ...buttonStyle,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px'
+  };
+
+  const colorSquareStyle: CSSProperties = {
+    width: '12px',
+    height: '12px',
+    borderRadius: '2px',
+    backgroundColor: hex,
+    border: '1px solid rgba(0,0,0,0.1)'
+  };
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.currentTarget.style.backgroundColor = "#1fc4c5";
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.currentTarget.style.backgroundColor = "#21e4e6";
+  };
 
   return (
-    <div>
-      <div 
-        className="create-section" 
-        style={{ 
-          backgroundColor: "#d8d8d8"
-        }}
-      >
-        <form onSubmit={(event) => onSubmit(event)}>
-          <div 
-            style={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              justifyContent: 'center', 
-              alignItems:'center', 
-              gap: '10px', 
-              width: '100%' 
-            }}
-          >
-            <label>Create Section</label>
-            <input
-              required
-              type="text"
-              value={sectionName}
-              onChange={(e) => {
-                setSectionName(e.target.value);
-              }}
-              style={{
-                borderRadius: "5px",
-              }}
-              placeholder="Section Name"
-            />
-            <button
-              type="button"
-              onClick={() => setDisplayColorPicker(!displayColorPicker)}
-              style={{ 
-                backgroundColor: "#21e4e6", 
-                color: "black", 
-                width: '80%',
-                borderRadius: '5px',
-                padding: '5px',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'background-color 0.3s ease',
-              }}
-              onMouseEnter={(e) => (e.target as HTMLButtonElement).style.backgroundColor = "#1fc4c5"}
-              onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = "#21e4e6"}
-            >
-              Select Color
-            </button>
-            <button
-              type="submit"
-              style={{ 
-                backgroundColor: "#21e4e6", 
-                color: "black", 
-                width: '50%',
-                borderRadius: '5px',
-                padding: '5px',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'background-color 0.3s ease',
-              }}
-              onClick={() => console.log({ sectionName, hex })}
-              onMouseEnter={(e) => (e.target as HTMLButtonElement).style.backgroundColor = "#1fc4c5"}
-              onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = "#21e4e6"}
-            >
-              Submit
-            </button>
-          </div>
-        </form>
-        {displayColorPicker && (
+    <div style={containerStyle}>
+      <form onSubmit={onSubmit} style={formStyle}>
+        <label style={labelStyle}>
+          Create Section
+        </label>
+        
+        <input
+          required
+          type="text"
+          value={sectionName}
+          onChange={(e) => setSectionName(e.target.value)}
+          style={inputStyle}
+          placeholder="Section Name"
+        />
+
+        <button
+          type="button"
+          onClick={() => setDisplayColorPicker(!displayColorPicker)}
+          style={colorButtonStyle}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div style={colorSquareStyle} />
+          Select Color
+        </button>
+
+        <button
+          type="submit"
+          style={buttonStyle}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          Submit
+        </button>
+      </form>
+
+      {displayColorPicker && (
+        <div style={{ marginTop: '10px' }}>
           <ColorPicker
             color={hex}
             onChangeColor={(newColor) => setHex(newColor)}
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
