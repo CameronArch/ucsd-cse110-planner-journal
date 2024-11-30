@@ -15,12 +15,12 @@ const SignUp: React.FC<SignUpProps> = ({ setShowSignUp }) => {
     const handleSignUp = async (event: React.FormEvent) => {
       event.preventDefault();
       if (!newUsername || !newPassword) {
-        setAlert({ message: 'Please fill in both fields.', type: 'error' });
+        setAlert({ message: 'Please Fill in Both Fields', type: 'error' });
         return;
       }
   
       if (accountContext.credentials.has(newUsername)) {
-        setAlert({ message: 'Username already exists. Please choose another.', type: 'error' });
+        setAlert({ message: 'Username Already Exists, Please Choose Another', type: 'error' });
         return;
       }
   
@@ -30,7 +30,7 @@ const SignUp: React.FC<SignUpProps> = ({ setShowSignUp }) => {
         return updatedCredentials;
       });
       
-      setAlert({ message: 'Account created successfully!', type: 'success' });
+      setAlert({ message: 'Account Created Successfully', type: 'success' });
     };
   
     return (
@@ -42,6 +42,7 @@ const SignUp: React.FC<SignUpProps> = ({ setShowSignUp }) => {
           <label htmlFor='create username'>Create Username</label>
           <input
             type="text"
+            data-testid="create username"
             id="create username"
             value={newUsername}
             onChange={(e) => setNewUsername(e.target.value)}
@@ -51,12 +52,13 @@ const SignUp: React.FC<SignUpProps> = ({ setShowSignUp }) => {
           <label htmlFor='create password'>Create Password</label>
           <input
             type="password"
+            data-testid="create password"
             id="create password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Create Account</button>
+        <button data-testid="create_account" type="submit">Create Account</button>
         <button
           type="button"
           onClick={() => setShowSignUp(false)}
