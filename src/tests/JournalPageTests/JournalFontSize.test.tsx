@@ -22,7 +22,7 @@ const mockSetIsOpen = jest.fn();
 
 const mockSetJournalEntries = jest.fn();
 const contextValue = {
-    currentDate: new Date(),
+    currentDate: new Date('2024-11-27'),
     setCurrentDate: mockSetCurrentDate,
     isOpen: true,
     setIsOpen: mockSetIsOpen,
