@@ -3,7 +3,7 @@ import './Auth.css';
 import { AccountContext } from './AccountContext';
 import AlertBanner from './AlertBanner';
 import { Authenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
+import './styles.css';
 import { JournalPageContextProvider } from '../JournalPage/JournalPageContext';
 import DisplayCalendarJournal from '../DisplayUI/DisplayCalendarJournal';
 import { MonthChangeContextProvider } from '../MonthChangeButton/MonthChangeContext';
@@ -30,7 +30,7 @@ const Login: React.FC = () => {
                         <form onSubmit={(e) => e.preventDefault()} className="auth-form">
                             <h2>Log In</h2>
                             {alert && <AlertBanner message={alert.message} type={alert.type} onClose={() => setAlert(null)} />}
-                            {/* You can optionally add custom fields here */}
+                            
                         </form>
                     )}
                 </div>
