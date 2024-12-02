@@ -3,6 +3,8 @@ import { useState } from "react";
 import CreateSection from "./Create-Section" 
 import { JournalPageContext } from './JournalPageContext';
 
+const micImage = '/MicImage.png';
+
 interface Section {
   name: string;
   color: string;
@@ -23,7 +25,7 @@ const JournalPage: React.FC = () => {
   const [textSize, setTextSize] = useState(14);
   const [sectionSelection, setSectionSelection] = useState<Section | null>(null);
   const [currentSections, setCurrentSections] = useState<Section[]>([]);
-
+  const [isRecording, setIsRecording] = useState(false); // Added for mic button
 
   useEffect(() => {
     if (currentDate) {
@@ -73,9 +75,14 @@ const JournalPage: React.FC = () => {
     setTextSize(numericValue);
   };
 
+  const handleMicClick = () => {
+    setIsRecording((prev) => !prev); // Toggle mic button state
+  };
+
   const handleSectionSelection = (section: Section) => {
     setSectionSelection(section);
   };
+
 
   const handleTextChange = (text: string) => {
     if (!currentDate || !sectionSelection) return;
@@ -191,6 +198,34 @@ const JournalPage: React.FC = () => {
               min={11}
               max={25}
               />
+
+              {/* Mic Button */}
+            <button
+            onClick={handleMicClick}
+            style={{
+              backgroundColor: isRecording ? 'red' : 'green',
+              border: 'none',
+              borderRadius: '50%',
+              marginLeft: '10px',
+              width: '40px',
+              height: '40px',
+              cursor: 'pointer',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              transition: 'background-color 0.3s ease',
+            }}
+          >
+            <img
+              src={micImage}
+              alt="Mic"
+              style={{
+                width: '80%',
+                height: '80%',
+                objectFit: 'contain',
+              }}
+            />
+          </button>
           </div>
         </div>
       </div>
