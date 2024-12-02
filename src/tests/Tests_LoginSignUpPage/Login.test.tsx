@@ -1,34 +1,35 @@
+// src/__tests__/SignUp.test.tsx
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Login from '../../Components/LoginSignUpPage/Login';
+import SignUp from '../../Components/LoginSignUpPage/SignUp';
 
-describe('Login Component', () => {
-  test('renders the login form with username and password inputs', () => {
-    render(<Login setShowSignUp={() => { } }/>);
+describe('SignUp Component', () => {
+  test('renders the sign-up form with username and password inputs', () => {
+    render(<SignUp setShowSignUp={() => {}} />);
 
-    // Check if "Log In" header is present
-    expect(screen.getByRole('heading', { name: 'Log In' })).toBeInTheDocument();
-
-    // Check if the "Log In" button is present
-    expect(screen.getByRole('button', { name: 'Log In' })).toBeInTheDocument();
-
-    // Check if username and password inputs are present
-    expect(screen.getByLabelText('Username')).toBeInTheDocument();
-    expect(screen.getByLabelText('Password')).toBeInTheDocument();
-
-    // Check if "Sign Up" link is present
+    // Check if "Sign Up" header is present
     expect(screen.getByText('Sign Up')).toBeInTheDocument();
+
+    // Check if create username and create password inputs are present
+    expect(screen.getByLabelText('Create Username')).toBeInTheDocument();
+    expect(screen.getByLabelText('Create Password')).toBeInTheDocument();
+
+    // Check if the "Create Account" button is present
+    expect(screen.getByRole('button', { name: 'Create Account' })).toBeInTheDocument();
+
+    // Check if "Back to Log In" link is present
+    expect(screen.getByText('Back to Log In')).toBeInTheDocument();
   });
 
-  test('calls goToSignUp when "Sign Up" link is clicked', () => {
-    const goToSignUpMock = jest.fn();
-    render(<Login setShowSignUp={goToSignUpMock} />);
+  test('calls goToLogin when "Back to Log In" link is clicked', () => {
+    const goToLoginMock = jest.fn();
+    render(<SignUp setShowSignUp={goToLoginMock} />);
 
-    // Click on the "Sign Up" link
-    fireEvent.click(screen.getByText('Sign Up'));
+    // Click on the "Back to Log In" link
+    fireEvent.click(screen.getByText('Back to Log In'));
 
     // Verify that the mock function was called
-    expect(goToSignUpMock).toHaveBeenCalled();
+    expect(goToLoginMock).toHaveBeenCalled();
   });
 });

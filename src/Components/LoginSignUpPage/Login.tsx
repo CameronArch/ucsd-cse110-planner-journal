@@ -1,84 +1,42 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import './Auth.css';
-import { AccountContext } from './AccountContext';
+
 import AlertBanner from './AlertBanner';
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import { JournalPageContextProvider } from '../JournalPage/JournalPageContext';
+import DisplayCalendarJournal from '../DisplayUI/DisplayCalendarJournal';
+import { MonthChangeContextProvider } from '../MonthChangeButton/MonthChangeContext';
+import { TaskMenuContextProvider } from '../TaskMenu/TaskMenuContext';
 
-interface LoginProps {
-  setShowSignUp: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Login: React.FC<LoginProps> = ({ setShowSignUp }) => {
-    const accountContext = useContext(AccountContext);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+const Login: React.FC = () => {
     const [alert, setAlert] = useState<{ message: string; type: 'error' | 'success' } | null>(null);
-  
-    const handleLogin = (event: React.FormEvent) => {
-      event.preventDefault();
-      
-      if (!username.trim()) {
-        setAlert({ message: 'Please Enter a Username', type: 'error' });
-        return;
-      }
-  
-      if (!password.trim()) {
-        setAlert({ message: 'Please Enter a Password', type: 'error' });
-        return;
-      }
-  
-      if (!accountContext.credentials.has(username)) {
-        setAlert({ message: 'Username Does Not Exist', type: 'error' });
-        return;
-      }
-  
-      if (accountContext.credentials.get(username) !== password) {
-        setAlert({ message: 'Incorrect Password', type: 'error' });
-        return;
-      }
-  
-      accountContext.setUsername(username);
-      accountContext.setPassword(password);
-      accountContext.setIsLoggedIn(true);
-    };
-  
+
     return (
-      <div className="auth-container">
-        {alert && <AlertBanner message={alert.message} type={alert.type} onClose={() => setAlert(null)} />}
-        <form onSubmit={handleLogin} className="auth-form">
-        <h2>Log In</h2>
-        <div className="form-group">
-        <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            data-testid="username"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-        <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            data-testid="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button data-testid="login" type="submit">Log In</button>
-        <div>
-          Don't have an account?{" "}
-          <button
-            onClick={() => setShowSignUp(true)}
-            className="link-button"
-          >
-            Sign Up
-          </button>
-        </div>
-      </form>
-      </div>
+        <Authenticator>
+            {({ signOut, user }) => (
+                <div>
+                    {user ? (
+                        <div>
+                            <JournalPageContextProvider>
+                                <TaskMenuContextProvider>
+                                    <MonthChangeContextProvider>
+                                        {signOut && <DisplayCalendarJournal logout={signOut} />}
+                                    </MonthChangeContextProvider>
+                                </TaskMenuContextProvider>
+                            </JournalPageContextProvider>
+                        </div>
+                    ) : (
+                        <form onSubmit={(e) => e.preventDefault()} className="auth-form">
+                            <h2>Log In</h2>
+                            {alert && <AlertBanner message={alert.message} type={alert.type} onClose={() => setAlert(null)} />}
+                            
+                        </form>
+                    )}
+                </div>
+            )}
+        </Authenticator>
     );
-  };
+};
   
   export default Login;

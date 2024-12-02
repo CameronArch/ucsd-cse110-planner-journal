@@ -6,7 +6,7 @@ import CalendarPage from "../../Components/CalendarPage/Calendar-Page";
 // test CalendarPage renders title and days of the week
 test('renders CalendarPage component', () => {
     render(
-        <CalendarPage />
+        <CalendarPage logout={() => {}} />
     );
   
     expect(screen.getByText(/PLANNER/i)).toBeInTheDocument();
