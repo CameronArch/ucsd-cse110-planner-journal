@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import './Auth.css';
-import { AccountContext } from './AccountContext';
+
 import AlertBanner from './AlertBanner';
 import { Authenticator } from '@aws-amplify/ui-react';
-import './styles.css';
+import '@aws-amplify/ui-react/styles.css';
 import { JournalPageContextProvider } from '../JournalPage/JournalPageContext';
 import DisplayCalendarJournal from '../DisplayUI/DisplayCalendarJournal';
 import { MonthChangeContextProvider } from '../MonthChangeButton/MonthChangeContext';
