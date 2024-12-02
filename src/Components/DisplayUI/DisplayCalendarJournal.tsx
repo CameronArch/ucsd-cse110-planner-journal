@@ -5,7 +5,11 @@ import JournalPage from "../JournalPage/Journal-Page";
 import RemindersManager from "../ReminderPopup/RemindersManager"
 import ResetReminderButton from "../ReminderPopup/ResetReminderButton";
 
-const DisplayCalendarJournal = () => {
+interface DisplayCalendarJournalProps {
+    logout: () => void;
+}
+
+const DisplayCalendarJournal = ({ logout }: DisplayCalendarJournalProps) => {
     const journalPageContext = useContext(JournalPageContext);
 
     return (
@@ -16,7 +20,7 @@ const DisplayCalendarJournal = () => {
                 <>
                     <RemindersManager />
                     <ResetReminderButton />
-                    <CalendarPage />
+                    <CalendarPage logout={logout}/>
                 </>
                         
             }

@@ -19,7 +19,9 @@ describe("DayObject Layout HTML", () => {
 
     render(
         <MockChangeMonthProvider>
-            <CalendarPage/>
+            <CalendarPage logout={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </MockChangeMonthProvider>
     );
 
@@ -44,7 +46,9 @@ describe("DayObject Layout HTML", () => {
 
     render(
         <MockChangeMonthProvider>
-            <CalendarPage/>
+            <CalendarPage logout={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </MockChangeMonthProvider>
     );
 
@@ -69,7 +73,9 @@ describe("DayObject Layout HTML", () => {
 
     render(
         <MockChangeMonthProvider>
-            <CalendarPage/>
+            <CalendarPage logout={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </MockChangeMonthProvider>
     );
 
@@ -94,7 +100,9 @@ describe("DayObject Layout HTML", () => {
 
     render(
         <MockChangeMonthProvider>
-            <CalendarPage/>
+            <CalendarPage logout={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </MockChangeMonthProvider>
     );
 
@@ -119,7 +127,9 @@ describe("DayObject Layout HTML", () => {
 
     render(
         <MockChangeMonthProvider>
-            <CalendarPage/>
+            <CalendarPage logout={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </MockChangeMonthProvider>
     );
 
@@ -144,7 +154,9 @@ describe("DayObject Layout HTML", () => {
 
     render(
         <MockChangeMonthProvider>
-            <CalendarPage/>
+            <CalendarPage logout={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </MockChangeMonthProvider>
     );
 
@@ -169,7 +181,9 @@ describe("DayObject Layout HTML", () => {
 
     render(
         <MockChangeMonthProvider>
-            <CalendarPage/>
+            <CalendarPage logout={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </MockChangeMonthProvider>
     );
 
@@ -194,7 +208,9 @@ describe("DayObject Layout HTML", () => {
 
     render(
         <MockChangeMonthProvider>
-            <CalendarPage/>
+            <CalendarPage logout={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </MockChangeMonthProvider>
     );
 
@@ -219,7 +235,9 @@ describe("DayObject Layout HTML", () => {
 
     render(
         <MockChangeMonthProvider>
-            <CalendarPage/>
+            <CalendarPage logout={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </MockChangeMonthProvider>
     );
 
@@ -244,7 +262,9 @@ describe("DayObject Layout HTML", () => {
 
     render(
         <MockChangeMonthProvider>
-            <CalendarPage/>
+            <CalendarPage logout={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </MockChangeMonthProvider>
     );
 
@@ -269,7 +289,9 @@ describe("DayObject Layout HTML", () => {
 
     render(
         <MockChangeMonthProvider>
-            <CalendarPage/>
+            <CalendarPage logout={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </MockChangeMonthProvider>
     );
 
@@ -294,7 +316,9 @@ describe("DayObject Layout HTML", () => {
 
     render(
         <MockChangeMonthProvider>
-            <CalendarPage/>
+            <CalendarPage logout={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </MockChangeMonthProvider>
     );
 
@@ -319,7 +343,9 @@ describe("DayObject Layout HTML", () => {
 
     render(
         <MockChangeMonthProvider>
-            <CalendarPage/>
+            <CalendarPage logout={function (): void {
+                throw new Error("Function not implemented.");
+            } }/>
         </MockChangeMonthProvider>
     );
 
