@@ -28,7 +28,9 @@ export const AccountContextProvider = (props: any) => {
     const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
     const [username, setUsername] = React.useState<string | null>(null);
     const [password, setPassword] = React.useState<string | null>(null);
-    const [credentials, setCredentials] = React.useState<Map<string, string>>(new Map());
+    const [credentials, setCredentials] = React.useState<Map<string, string>>(
+        new Map([["Admin", "12345"]]) // Initial account
+    );
 
     return (
         <AccountContext.Provider

@@ -17,22 +17,22 @@ const Login: React.FC<LoginProps> = ({ setShowSignUp }) => {
       event.preventDefault();
       
       if (!username.trim()) {
-        setAlert({ message: 'Please enter a username.', type: 'error' });
+        setAlert({ message: 'Please Enter a Username', type: 'error' });
         return;
       }
   
       if (!password.trim()) {
-        setAlert({ message: 'Please enter a password.', type: 'error' });
+        setAlert({ message: 'Please Enter a Password', type: 'error' });
         return;
       }
   
       if (!accountContext.credentials.has(username)) {
-        setAlert({ message: 'Username does not exist', type: 'error' });
+        setAlert({ message: 'Username Does Not Exist', type: 'error' });
         return;
       }
   
       if (accountContext.credentials.get(username) !== password) {
-        setAlert({ message: 'Incorrect password', type: 'error' });
+        setAlert({ message: 'Incorrect Password', type: 'error' });
         return;
       }
   
@@ -50,6 +50,7 @@ const Login: React.FC<LoginProps> = ({ setShowSignUp }) => {
         <label htmlFor="username">Username</label>
           <input
             type="text"
+            data-testid="username"
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -59,12 +60,13 @@ const Login: React.FC<LoginProps> = ({ setShowSignUp }) => {
         <label htmlFor="password">Password</label>
           <input
             type="password"
+            data-testid="password"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Log In</button>
+        <button data-testid="login" type="submit">Log In</button>
         <div>
           Don't have an account?{" "}
           <button
