@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './Auth.css';
 
 import AlertBanner from './AlertBanner';
 import { Authenticator } from '@aws-amplify/ui-react';
@@ -14,10 +13,11 @@ const Login: React.FC = () => {
 
     return (
         <Authenticator>
+            
             {({ signOut, user }) => (
-                <div>
+                <>
                     {user ? (
-                        <div>
+                        <>
                             <JournalPageContextProvider>
                                 <TaskMenuContextProvider>
                                     <MonthChangeContextProvider>
@@ -25,7 +25,7 @@ const Login: React.FC = () => {
                                     </MonthChangeContextProvider>
                                 </TaskMenuContextProvider>
                             </JournalPageContextProvider>
-                        </div>
+                            </>
                     ) : (
                         <form onSubmit={(e) => e.preventDefault()} className="auth-form">
                             <h2>Log In</h2>
@@ -33,7 +33,7 @@ const Login: React.FC = () => {
                             
                         </form>
                     )}
-                </div>
+                </>
             )}
         </Authenticator>
     );

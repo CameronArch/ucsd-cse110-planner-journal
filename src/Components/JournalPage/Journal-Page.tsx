@@ -120,6 +120,9 @@ const JournalPage: React.FC = () => {
           borderRadius: '5px',
           border: 'none',
           cursor: 'pointer',
+          fontSize: '16px',
+          width: '15%',
+          fontWeight: 'bold',
         }}
         onClick={handleReturn}
         onMouseEnter={() => setIsHovered(true)}

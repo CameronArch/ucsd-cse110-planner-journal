@@ -8,11 +8,9 @@ Amplify.configure(outputs);
 
 const App: React.FC = () => {
   return (
-    <div>
         <AccountContextProvider>
             <Login />
         </AccountContextProvider>
-    </div>
   );
 };
 

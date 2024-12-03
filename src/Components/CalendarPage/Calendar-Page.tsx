@@ -30,9 +30,11 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ logout }) => {
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          minHeight: '100vh',
+          maxHeight: '100vh',
           maxWidth: '100%',
-          overflow: 'hidden'
+          overflow: 'auto',
+          paddingTop: '4px',
+          paddingBottom: '20px',
         }}>
           {/* Header */}
           <div style={{
