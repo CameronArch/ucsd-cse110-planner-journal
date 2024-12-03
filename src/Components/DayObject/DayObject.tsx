@@ -1,9 +1,9 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import './DayObjectStyle.css';
 import { Task } from "../../Types/TaskType";
 import { JournalPageContext } from "../JournalPage/JournalPageContext";
 import { TaskMenuContext } from "../TaskMenu/TaskMenuContext";
-
+import { MonthChangeContext } from "../MonthChangeButton/MonthChangeContext";
 interface DayObjectProps {
     currentDate: Date;
 }
@@ -14,9 +14,10 @@ const DayObject = ({currentDate}: DayObjectProps) => {
     const taskMenuContext = useContext(TaskMenuContext);
     const dateKey = currentDate.toISOString().split('T')[0];
     const dayTasks = taskMenuContext.tasks[dateKey] || [];
-    
+   
+
     return (
-        <div>
+        <div>  
             <div className="dayObject">
                 <div className="dayObject__header">
                     <div className="dayObject__header__date">{currentDate.getDate()}</div>
@@ -24,12 +25,14 @@ const DayObject = ({currentDate}: DayObjectProps) => {
                 <div className="dayObject__tasks">
                     <DisplayTasks currentDate={currentDate} dayTasks={dayTasks}/>
                 </div>
-                <AddTaskButton currentDate={currentDate}/>
-                <JournalEntryButton currentDate={currentDate}/>
+                 <AddTaskButton currentDate={currentDate}/>
+                 <JournalEntryButton currentDate={currentDate}/>
+                </div>
             </div>
-        </div>
-    );
-}
+        );
+   }
+  
+
 
 export default DayObject;
 
@@ -64,6 +67,17 @@ interface JournalEntryButtonProps {
 
 //Create a button component that will be used to add a journal entry to DayObject
 const JournalEntryButton = ({currentDate}: JournalEntryButtonProps) => {
+   /*const color = ({ isActive }: { isActive: boolean }) => {
+        return(
+            <JournalEntryButton = {`JournalEntryButton ${isActive ? 'active' : 'inactive'}`}>
+
+            </JournalEntryButton>
+        )
+    }
+*/
+    //const isActive: boolean = true;
+    //const className: string = `button ${isActive ? 'active' : 'inactive'}`;
+
     const journalPageContext = useContext(JournalPageContext);
 
     const handleClick = () => {
