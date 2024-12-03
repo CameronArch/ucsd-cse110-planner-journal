@@ -163,7 +163,8 @@ const JournalPage: React.FC = () => {
   const updateJournalEntries = async () => {
     const dateString = currentDate?.toISOString().split('T')[0];
     let response;
-    for (const j of journalEntries[dateString!].sections) {
+    if (!dateString) return;
+    for (const j of journalEntries[dateString]?.sections || []) {
       const test = await client.models.JournalEntry.get({id: dateString + j.name});
       if (test) {
         response = await client.models.JournalEntry.create({
