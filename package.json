@@ -18,6 +18,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "prebuild": "ln -s ../amplify_outputs.json src/amplify_outputs.json || true",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
