@@ -1,26 +1,24 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 
 const schema = a.schema({
-  Note: a
+  JournalEntry: a
+    .model({
+      color: a.string(),
+      name: a.string(),
+      entry: a.string(),
+      day: a.string(),
+    })
+    .authorization((allow) => [allow.owner()]),
+  Task: a
     .model({
       name: a.string(),
-      description: a.string(),
-      image: a.string(),
+      startTime: a.string(),
+      endTime: a.string(),
+      reminder: a.boolean(),
+      reminderTime: a.integer(),
+      idNumber: a.integer(),
     })
     .authorization((allow) => [allow.owner()]),
-
-    Task: a
-    .model({
-        id: a.float().required(),
-        name: a.string().required(),
-        start: a.string().required(), // for datetime string
-        end: a.string().required(), // for datetime string
-        reminderTime: a.float().required(),
-        isReminder: a.boolean().required(),
-    })
-    .authorization((allow) => [allow.owner()]),
-
-
 });
 
 export type Schema = ClientSchema<typeof schema>;

@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Task } from "../../Types/TaskType";
-
-import { DataStore } from "@aws-amplify/datastore";
+import type { Schema } from "../../../amplify/data/resource";
+import { generateClient } from "aws-amplify/data";
 
 //Create a context Type for the TaskMenu component
 interface TaskMenuContextType {
@@ -14,6 +14,9 @@ interface TaskMenuContextType {
     addTask: (date: Date, task: Task) => void;
     removeTask: (date: Date, taskId: number) => void;
 }
+
+//Creates a client to use the defined schema from amplify/data/resource.ts to import backend data
+const client = generateClient<Schema>();
 
 //Create a default object for the TaskMenuContext
 const initialTaskMenu: TaskMenuContextType = {
@@ -36,57 +39,45 @@ export const TaskMenuContextProvider: React.FC<{children: React.ReactNode}> = ({
     const [currentDate, setCurrentDate] = useState<Date | null>(null);
     const [tasks, setTasks] = useState<Record<string, Task[]>>({});
 
-    const addTask = useCallback(async (date: Date, task: Omit<Task, 'id'>) => {
+    const pushTask = async (name: string, startTime: string, endTime: string, reminder: boolean, reminderTime: number, idNumber: number) => {
+        await client.models.Task.create({
+            name: name,
+            startTime: startTime,
+            endTime: endTime,
+            reminder: reminder,
+            reminderTime: reminderTime,
+            idNumber: idNumber,
+        });
+    }
+
+    const popTask = async (taskId: number) => {
+        await client.models.Task.delete({ id: taskId.toString() });
+    };
+
+    const addTask = useCallback((date: Date, task: Task) => {
         const dateKey = date.toISOString().split('T')[0];
-    
-        // Save to Amplify
-        const savedTask = await DataStore.save(
-            new Task({
-                ...task,
-                start: task.start,
-                end: task.end,
-                reminderTime: task.reminderTime,
-                isReminder: task.isReminder,
-            })
-        );
-    
-        // Update local state
         setTasks(prev => ({
             ...prev,
-            [dateKey]: [...(prev[dateKey] || []), savedTask]
+            [dateKey]: [...(prev[dateKey] || []), task]
         }));
+        pushTask(
+            task.name, 
+            task.start, 
+            task.end, 
+            task.isReminder ? task.isReminder : false, 
+            task.reminderTime? task.reminderTime : 0, 
+            task.id
+        );
     }, []);
 
-    const removeTask = useCallback(async (date: Date, taskId: number) => {
+    const removeTask = useCallback((date: Date, taskId: number) => {
         const dateKey = date.toISOString().split('T')[0];
-    
-        // Query the task to delete
-        const taskToDelete = await DataStore.query(Task, taskId);
-        if (taskToDelete) {
-            await DataStore.delete(taskToDelete);
-        }
-    
-        // Update local state
         setTasks(prev => ({
             ...prev,
             [dateKey]: (prev[dateKey] || []).filter(task => task.id !== taskId)
         }));
-    }, []);
 
-
-    useEffect(() => {
-        const loadTasks = async () => {
-            const allTasks = await DataStore.query(Task);
-            const tasksByDate = allTasks.reduce((acc, task) => {
-                const dateKey = task.start.split('T')[0];
-                acc[dateKey] = acc[dateKey] ? [...acc[dateKey], task] : [task];
-                return acc;
-            }, {} as Record<string, Task[]>);
-    
-            setTasks(tasksByDate);
-        };
-    
-        loadTasks();
+        popTask(taskId);
     }, []);
     
     return (
