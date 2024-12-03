@@ -1,5 +1,19 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom';
+
+jest.mock('react-speech-recognition', () => ({
+  useSpeechRecognition: () => ({
+    listening: false,
+    finalTranscript: '',
+    interimTranscript: '',
+    resetTranscript: jest.fn(),
+  }),
+  SpeechRecognition: {
+    startListening: jest.fn(),
+    stopListening: jest.fn(),
+  },
+}));
+
 import JournalPage from "../../Components/JournalPage/Journal-Page";
 import { JournalPageContext } from "../../Components/JournalPage/JournalPageContext";
 import CreateSection from '../../Components/JournalPage/Create-Section';
