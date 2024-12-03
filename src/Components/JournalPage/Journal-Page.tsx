@@ -166,7 +166,7 @@ const JournalPage: React.FC = () => {
     if (!dateString) return;
     for (const j of journalEntries[dateString]?.sections || []) {
       const test = await client.models.JournalEntry.get({id: dateString + j.name});
-      if (test) {
+      if (!test) {
         response = await client.models.JournalEntry.create({
           id: dateString + j.name,
           color: j.color,
