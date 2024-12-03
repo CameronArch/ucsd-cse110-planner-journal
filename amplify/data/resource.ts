@@ -6,7 +6,7 @@ const schema = a.schema({
       color: a.string(),
       name: a.string(),
       entry: a.string(),
-      day: a.string(),
+      date: a.string(),
     })
     .authorization((allow) => [allow.owner()]),
   Task: a
@@ -17,6 +17,7 @@ const schema = a.schema({
       reminder: a.boolean(),
       reminderTime: a.integer(),
       idNumber: a.integer(),
+      date: a.string(),
     })
     .authorization((allow) => [allow.owner()]),
 });
