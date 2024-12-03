@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Task } from "../../Types/TaskType";
 import type { Schema } from "../../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
-import { DataStore } from "@aws-amplify/datastore";
 
 //Create a context Type for the TaskMenu component
 interface TaskMenuContextType {
