@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Task } from "../../Types/TaskType";
 import type { Schema } from "../../../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
+import { DataStore } from "@aws-amplify/datastore";
 
 //Create a context Type for the TaskMenu component
 interface TaskMenuContextType {
@@ -17,6 +18,8 @@ interface TaskMenuContextType {
 
 //Creates a client to use the defined schema from amplify/data/resource.ts to import backend data
 const client = generateClient<Schema>();
+
+console.log(client);
 
 //Create a default object for the TaskMenuContext
 const initialTaskMenu: TaskMenuContextType = {
@@ -40,18 +43,30 @@ export const TaskMenuContextProvider: React.FC<{children: React.ReactNode}> = ({
     const [tasks, setTasks] = useState<Record<string, Task[]>>({});
 
     const pushTask = async (name: string, startTime: string, endTime: string, reminder: boolean, reminderTime: number, idNumber: number) => {
-        await client.models.Task.create({
-            name: name,
-            startTime: startTime,
-            endTime: endTime,
-            reminder: reminder,
-            reminderTime: reminderTime,
-            idNumber: idNumber,
-        });
+        try {
+            const task = new Task({
+              name,
+              startTime,
+              endTime,
+              reminder,
+              reminderTime,
+              idNumber
+            });
+            await DataStore.save(task); // Save task using DataStore
+          } catch (error) {
+            console.error('Error creating task:', error);
+          }
     }
 
     const popTask = async (taskId: number) => {
-        await client.models.Task.delete({ id: taskId.toString() });
+        try {
+            const taskToDelete = await DataStore.query(Task, taskId);
+            if (taskToDelete) {
+              await DataStore.delete(taskToDelete); // Delete task using DataStore
+            }
+          } catch (error) {
+            console.error('Error deleting task:', error);
+          }
     };
 
     const addTask = useCallback((date: Date, task: Task) => {
