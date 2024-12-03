@@ -42,57 +42,30 @@ export const TaskMenuContextProvider: React.FC<{children: React.ReactNode}> = ({
     const [currentDate, setCurrentDate] = useState<Date | null>(null);
     const [tasks, setTasks] = useState<Record<string, Task[]>>({});
 
-    const pushTask = async (name: string, startTime: string, endTime: string, reminder: boolean, reminderTime: number, idNumber: number) => {
-        try {
-            const task = new Task({
-              name,
-              startTime,
-              endTime,
-              reminder,
-              reminderTime,
-              idNumber
-            });
-            await DataStore.save(task); // Save task using DataStore
-          } catch (error) {
-            console.error('Error creating task:', error);
-          }
-    }
-
-    const popTask = async (taskId: number) => {
-        try {
-            const taskToDelete = await DataStore.query(Task, taskId);
-            if (taskToDelete) {
-              await DataStore.delete(taskToDelete); // Delete task using DataStore
-            }
-          } catch (error) {
-            console.error('Error deleting task:', error);
-          }
-    };
-
-    const addTask = useCallback((date: Date, task: Task) => {
+    const addTask = useCallback(async (date: Date, task: Task) => {
         const dateKey = date.toISOString().split('T')[0];
         setTasks(prev => ({
             ...prev,
             [dateKey]: [...(prev[dateKey] || []), task]
         }));
-        pushTask(
-            task.name, 
-            task.start, 
-            task.end, 
-            task.isReminder ? task.isReminder : false, 
-            task.reminderTime? task.reminderTime : 0, 
-            task.id
-        );
+        await client.models.Task.create({
+            name: task.name,
+            startTime: task.start,
+            endTime: task.end,
+            reminder: task.isReminder,
+            reminderTime: task.reminderTime,
+            idNumber: task.id,
+        });
     }, []);
 
-    const removeTask = useCallback((date: Date, taskId: number) => {
+    const removeTask = useCallback(async (date: Date, taskId: number) => {
         const dateKey = date.toISOString().split('T')[0];
         setTasks(prev => ({
             ...prev,
             [dateKey]: (prev[dateKey] || []).filter(task => task.id !== taskId)
         }));
 
-        popTask(taskId);
+        await client.models.Task.delete({ id: taskId.toString() });
     }, []);
     
     return (
