@@ -6,7 +6,11 @@ import { AccountContext } from '../LoginSignUpPage/AccountContext';
 import MonthChangeButton from '../MonthChangeButton/monthChangeButton';
 import { JournalPageContext } from '../JournalPage/JournalPageContext';
 
-const CalendarPage: React.FC = () => {
+interface CalendarPageProps {
+    logout: () => void;
+  }
+
+const CalendarPage: React.FC<CalendarPageProps> = ({ logout }) => {
     const taskMenuContext = useContext(TaskMenuContext);
     
 
@@ -26,9 +30,11 @@ const CalendarPage: React.FC = () => {
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          minHeight: '100vh',
+          maxHeight: '100vh',
           maxWidth: '100%',
-          overflow: 'hidden'
+          overflow: 'auto',
+          paddingTop: '4px',
+          paddingBottom: '20px',
         }}>
           {/* Header */}
           <div style={{
@@ -39,7 +45,7 @@ const CalendarPage: React.FC = () => {
             width: '100%'
           }}>
             <div style={{ width: '120px' }}>
-              <LogoutButton />
+              <LogoutButton logout={logout}/>
             </div>
             <h1 style={{
               textAlign: 'center',
@@ -118,7 +124,11 @@ const CalendarPage: React.FC = () => {
       );
     };
     
-    const LogoutButton = () => {
+    interface LogoutButtonProps {
+        logout: () => void;
+    }
+
+    const LogoutButton = ({ logout }: LogoutButtonProps) => {
       const accountContext = useContext(AccountContext);
       const taskMenuContext = useContext(TaskMenuContext);
       const journalPageContext = useContext(JournalPageContext);
@@ -131,6 +141,7 @@ const CalendarPage: React.FC = () => {
         accountContext.setUsername(null);
         accountContext.setPassword(null);
         journalPageContext.setJournalEntries({});
+        logout();
       };
     
       return (

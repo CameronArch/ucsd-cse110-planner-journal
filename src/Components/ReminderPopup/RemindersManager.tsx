@@ -14,7 +14,7 @@ const RemindersManager: React.FC = () => {
     timersRef.current = {};
 
     const now = new Date();
-    console.log('Current time:', now.toString());
+    
 
     const newActiveReminderTasks: Task[] = [];
 
@@ -24,10 +24,7 @@ const RemindersManager: React.FC = () => {
           const { reminderDateTime, taskDateTime } = getReminderDateTime(dateKey, task.start, task.reminderTime);
           const timeUntilReminder = reminderDateTime.getTime() - now.getTime();
 
-          console.log(`\nTask: ${task.name}`);
-          console.log('Task DateTime:', taskDateTime.toString());
-          console.log('Reminder DateTime:', reminderDateTime.toString());
-          console.log('Time until reminder (ms):', timeUntilReminder);
+          
 
           if (timeUntilReminder > 0) {
             // Schedule future reminder
@@ -42,7 +39,7 @@ const RemindersManager: React.FC = () => {
             timersRef.current[`${dateKey}-${task.id}`] = timerId;
           } else if (now >= reminderDateTime && now <= taskDateTime) {
             // Reminder time has passed, but task hasn't started yet
-            console.log('Reminder time has passed, displaying reminder immediately');
+            
             // Only display if not muted
             if (localStorage.getItem('reminderMuted') !== 'true') {
               newActiveReminderTasks.push(task);
@@ -111,9 +108,7 @@ function getReminderDateTime(
   const taskDateTime = new Date(year, month - 1, day, hours, minutes);
   const reminderDateTime = new Date(taskDateTime.getTime() - reminderTime * 60 * 1000);
 
-  console.log(`\nCalculating reminder for task starting at ${startTime}`);
-  console.log('Task DateTime:', taskDateTime.toString());
-  console.log('Reminder DateTime:', reminderDateTime.toString());
+  
 
   return { reminderDateTime, taskDateTime };
 }

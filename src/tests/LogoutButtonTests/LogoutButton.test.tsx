@@ -38,18 +38,19 @@ test('calls context methods on logout', () => {
         journalEntries: {},
         setJournalEntries: jest.fn(),
     };
-
-    const renderWithProviders = () =>
-        render(
+    const mocksignout = jest.fn();
+    const renderWithProviders = () => {
+        
+        return render(
             <AccountContext.Provider value={mockAccountContext}>
                 <JournalPageContext.Provider value={mockJournalPageContext}>
                     <TaskMenuContext.Provider value={mockTaskMenuContext}>
-                        <LogoutButton />
+                        <LogoutButton logout={mocksignout}/>
                     </TaskMenuContext.Provider>
                 </JournalPageContext.Provider>
             </AccountContext.Provider>
         );
-
+    }
     const { getByText } = renderWithProviders();
 
     const logoutButton = getByText('Logout');
@@ -59,6 +60,7 @@ test('calls context methods on logout', () => {
     expect(mockTaskMenuContext.setIsOpen).toHaveBeenCalledWith(false);
     expect(mockTaskMenuContext.setCurrentDate).toHaveBeenCalledWith(null);
     expect(mockTaskMenuContext.setTasks).toHaveBeenCalledWith({});
+    expect(mocksignout).toHaveBeenCalled();
 
     // AccountContext methods were called
     expect(mockAccountContext.setIsLoggedIn).toHaveBeenCalledWith(false);
