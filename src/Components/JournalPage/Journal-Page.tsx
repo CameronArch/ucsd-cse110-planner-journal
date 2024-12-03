@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { useState } from "react";
 import CreateSection from "./Create-Section" 
 import { JournalPageContext } from './JournalPageContext';
+import SpeechRecognition , { useSpeechRecognition } from 'react-speech-recognition';
 
 const micImage = '/MicImage.png';
 
@@ -10,7 +11,6 @@ interface Section {
   color: string;
   text?: string;
 }
-
 
 const JournalPage: React.FC = () => {
   const { 
@@ -26,6 +26,40 @@ const JournalPage: React.FC = () => {
   const [sectionSelection, setSectionSelection] = useState<Section | null>(null);
   const [currentSections, setCurrentSections] = useState<Section[]>([]);
   const [isRecording, setIsRecording] = useState(false); // Added for mic button
+  const [isNewRecording, setIsNewRecording] = useState(false); // Used for tracking capitalization
+
+
+  //SpeechRecognition
+  const {
+    listening,
+    finalTranscript,
+    resetTranscript,
+  } = useSpeechRecognition({clearTranscriptOnListen: false});
+
+  const [prevFinalTranscript, setPrevFinalTranscript] = useState('');
+
+  //Appends newly spoken text to previous text
+  useEffect(() => {
+    if (sectionSelection && finalTranscript !== prevFinalTranscript) {
+      let newTranscript = finalTranscript.replace(prevFinalTranscript, '');
+      if (newTranscript) {
+        if (isNewRecording) {
+          // Capitalize the first letter
+          newTranscript = newTranscript.charAt(0).toUpperCase() + newTranscript.slice(1);
+          setIsNewRecording(false); 
+        }
+        const updatedText = (sectionSelection.text || '') + ' ' + newTranscript + '.';
+        handleTextChange(updatedText);
+        setPrevFinalTranscript(finalTranscript);
+      }
+    }
+  }, [finalTranscript, sectionSelection, prevFinalTranscript]);
+
+  useEffect(() => {
+    if (!listening) {
+      setIsRecording(false);
+    }
+  }, [listening]);
 
   useEffect(() => {
     if (currentDate) {
@@ -48,6 +82,11 @@ const JournalPage: React.FC = () => {
   const handleAddSection = (newSection: Section) => {
     if (!currentDate) return;
 
+    if (currentSections.some(section => section.name === newSection.name)) {
+      alert('Section already exists.');
+      return;
+    }
+    
     const dateString = currentDate.toISOString().split('T')[0];
     const updatedSections = [...currentSections, { ...newSection, text: '' }];
     
@@ -75,9 +114,23 @@ const JournalPage: React.FC = () => {
     setTextSize(numericValue);
   };
 
+
   const handleMicClick = () => {
-    setIsRecording((prev) => !prev); // Toggle mic button state
-  };
+    if (!sectionSelection) {
+      alert('Please select a section before recording.');
+      return;
+    }
+    if (isRecording) {
+      SpeechRecognition.stopListening();
+    } else {
+      //Empties queue of current transcripts and starts new recording
+      setPrevFinalTranscript(''); 
+      resetTranscript();
+      setIsNewRecording(true);
+      SpeechRecognition.startListening({ continuous: false, language: 'en-US' });
+    }
+    setIsRecording((prev) => !prev);
+    };
 
   const handleSectionSelection = (section: Section) => {
     setSectionSelection(section);
@@ -89,7 +142,7 @@ const JournalPage: React.FC = () => {
 
     const dateString = currentDate.toISOString().split('T')[0];
     const updatedSections = currentSections.map(section => 
-      section.name === sectionSelection.name 
+      section.name === sectionSelection.name
         ? { ...section, text } 
         : section
     );
