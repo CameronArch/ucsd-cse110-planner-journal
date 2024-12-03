@@ -3,9 +3,10 @@ import { useState } from "react";
 import CreateSection from "./Create-Section" 
 import { JournalPageContext } from './JournalPageContext';
 import SpeechRecognition , { useSpeechRecognition } from 'react-speech-recognition';
-import { generateClient } from '@aws-amplify/api';
+import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../../../amplify/data/resource";
 
+// Create a client to use the defined schema from amplify/data/resource.ts to import backend data
 const client = generateClient<Schema>();
 
 const micImage = '/MicImage.png';
