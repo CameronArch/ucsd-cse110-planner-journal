@@ -1,5 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Task } from "../../Types/TaskType";
+
+import { DataStore } from "@aws-amplify/datastore";
 
 //Create a context Type for the TaskMenu component
 interface TaskMenuContextType {
@@ -34,20 +36,57 @@ export const TaskMenuContextProvider: React.FC<{children: React.ReactNode}> = ({
     const [currentDate, setCurrentDate] = useState<Date | null>(null);
     const [tasks, setTasks] = useState<Record<string, Task[]>>({});
 
-    const addTask = useCallback((date: Date, task: Task) => {
+    const addTask = useCallback(async (date: Date, task: Omit<Task, 'id'>) => {
         const dateKey = date.toISOString().split('T')[0];
+    
+        // Save to Amplify
+        const savedTask = await DataStore.save(
+            new Task({
+                ...task,
+                start: task.start,
+                end: task.end,
+                reminderTime: task.reminderTime,
+                isReminder: task.isReminder,
+            })
+        );
+    
+        // Update local state
         setTasks(prev => ({
             ...prev,
-            [dateKey]: [...(prev[dateKey] || []), task]
+            [dateKey]: [...(prev[dateKey] || []), savedTask]
         }));
     }, []);
 
-    const removeTask = useCallback((date: Date, taskId: number) => {
+    const removeTask = useCallback(async (date: Date, taskId: number) => {
         const dateKey = date.toISOString().split('T')[0];
+    
+        // Query the task to delete
+        const taskToDelete = await DataStore.query(Task, taskId);
+        if (taskToDelete) {
+            await DataStore.delete(taskToDelete);
+        }
+    
+        // Update local state
         setTasks(prev => ({
             ...prev,
             [dateKey]: (prev[dateKey] || []).filter(task => task.id !== taskId)
         }));
+    }, []);
+
+
+    useEffect(() => {
+        const loadTasks = async () => {
+            const allTasks = await DataStore.query(Task);
+            const tasksByDate = allTasks.reduce((acc, task) => {
+                const dateKey = task.start.split('T')[0];
+                acc[dateKey] = acc[dateKey] ? [...acc[dateKey], task] : [task];
+                return acc;
+            }, {} as Record<string, Task[]>);
+    
+            setTasks(tasksByDate);
+        };
+    
+        loadTasks();
     }, []);
     
     return (
