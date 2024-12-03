@@ -30,9 +30,8 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ logout }) => {
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          maxHeight: '100vh',
+          height: 'fit-content',
           maxWidth: '100%',
-          overflow: 'auto',
           paddingTop: '4px',
           paddingBottom: '20px',
         }}>
@@ -85,6 +84,7 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ logout }) => {
           {/* Main Container with TaskMenu and Calendar side by side */}
           <div style={{
             display: 'flex',
+            height: 'fit-content',
             padding: '0 16px',
             gap: '16px',
             flexGrow: 1
@@ -105,7 +105,7 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ logout }) => {
               gridTemplateRows: 'auto repeat(5, 1fr)',
               gridTemplateColumns: 'repeat(7, 1fr)',
               gap: '4px',
-              height: '600px',
+              height: 'fit-content',
               flexGrow: 1,
               marginRight: '48px'
             }}>

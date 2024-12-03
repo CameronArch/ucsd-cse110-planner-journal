@@ -15,7 +15,7 @@ const Login: React.FC = () => {
         <Authenticator>
             
             {({ signOut, user }) => (
-                <>
+                <div style={{height: 'fit-content', padding: '0px'}}>
                     {user ? (
                         <>
                             <JournalPageContextProvider>
@@ -33,7 +33,7 @@ const Login: React.FC = () => {
                             
                         </form>
                     )}
-                </>
+                </div>
             )}
         </Authenticator>
     );
