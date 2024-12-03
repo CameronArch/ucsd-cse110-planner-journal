@@ -11,6 +11,22 @@
     box-sizing: border-box;
   }
 
+  .dayObject.today {
+
+    background: #FFD966; 
+
+    display: flex;
+    flex-direction: column;
+    min-width: 175px;
+    min-height: 110px;
+    padding: 5px;
+    overflow-y: auto; 
+    position: relative;
+    border: 1px solid black;
+    box-sizing: border-box;
+  
+  }
+
   .dayObject.placeholder {
     background-color: #c0c0c0;
     opacity: 0.5; 
@@ -102,11 +118,51 @@
   }
   
   .journalEntryButton {
+    /*
+    $type = JournalEntriesMap;
+    @if(type != 'Write your ${sectionSelection.name} entry here...')
+    {
+    
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+      padding: 3px 8px;
+      background: #FFD966;
+      color: white;
+      border: 1px solid black;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.1s ease, background-color 0.1s ease;
+    */
+
     position: absolute;
     bottom: 5px;
     left: 5px;
     padding: 3px 8px;
     background: #007bff;
+    color: white;
+    border: 1px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s ease, background-color 0.1s ease;
+  }
+
+  .journalEntryButton:filled {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    padding: 3px 8px;
+    background: #FFD966;
     color: white;
     border: 1px solid black;
     border-radius: 4px;
