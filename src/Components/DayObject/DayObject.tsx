@@ -14,52 +14,25 @@ const DayObject = ({currentDate}: DayObjectProps) => {
     const taskMenuContext = useContext(TaskMenuContext);
     const dateKey = currentDate.toISOString().split('T')[0];
     const dayTasks = taskMenuContext.tasks[dateKey] || [];
-   //const today = useState(new Date()); 
-   //const day = today.getDate());
+   
 
-   const monthChangeContext = useContext(MonthChangeContext);
-   const [selectedDate] = useState(Date()); 
-   //const month  = monthChangeContext.setCurrentMonth(selectedDate.getMonth());
-   //const day = monthChangeContext.setCurrentYear(selectedDate.getDate());
-
-    if(dateKey === selectedDate as unknown)
-    {
-        return (
-            <div>
-                <div className="dayObject.today">
-                    <div className="dayObject__header">
-                        <div className="dayObject__header__date">{currentDate.getDate()}</div>
-                    </div>
-                    <div className="dayObject__tasks">
-                        <DisplayTasks currentDate={currentDate} dayTasks={dayTasks}/>
-                    </div>
-                    <AddTaskButton currentDate={currentDate}/>
-                    <JournalEntryButton currentDate={currentDate}/>
+    return (
+        <div>  
+            <div className="dayObject">
+                <div className="dayObject__header">
+                    <div className="dayObject__header__date">{currentDate.getDate()}</div>
                 </div>
-            </div>
-            
-        );
-    }
-
-    else
-    {
-        return (
-            <div>  
-                <div className="dayObject">
-                    <div className="dayObject__header">
-                        <div className="dayObject__header__date">{currentDate.getDate()}</div>
-                    </div>
-                    <div className="dayObject__tasks">
-                        <DisplayTasks currentDate={currentDate} dayTasks={dayTasks}/>
-                    </div>
-                    <AddTaskButton currentDate={currentDate}/>
-                    <JournalEntryButton currentDate={currentDate}/>
+                <div className="dayObject__tasks">
+                    <DisplayTasks currentDate={currentDate} dayTasks={dayTasks}/>
+                </div>
+                 <AddTaskButton currentDate={currentDate}/>
+                 <JournalEntryButton currentDate={currentDate}/>
                 </div>
             </div>
         );
    }
   
-}
+
 
 export default DayObject;
 

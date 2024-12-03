@@ -4,7 +4,7 @@
     min-width: 175px;
     min-height: 110px;
     padding: 5px;
-    background: #d3d3d3; 
+    background:"yellow"; 
     overflow-y: auto; 
     position: relative;
     border: 1px solid black;
@@ -13,18 +13,17 @@
 
   .dayObject.today {
 
-    background: #FFD966; 
-
     display: flex;
     flex-direction: column;
     min-width: 175px;
     min-height: 110px;
     padding: 5px;
-    overflow-y: auto; 
+    background: #FFD966;
+    overflow-y: auto;
     position: relative;
     border: 1px solid black;
     box-sizing: border-box;
-  
+
   }
 
   .dayObject.placeholder {

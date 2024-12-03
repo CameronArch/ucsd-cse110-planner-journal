@@ -55,6 +55,8 @@ const TaskMenu: React.FC = () => {
     <div className="task-menu-container">
       <h1 className="task-menu-title">Create Task/Event</h1>
       <form className="task-menu-form" onSubmit={handleSubmit}>
+      <div className="task-menu-label">Date: {taskMenuContext.currentDate?.toDateString()}  
+        </div>
         <label className="task-menu-label" htmlFor="name">
           Task Name
         </label>
