@@ -82,6 +82,11 @@ const JournalPage: React.FC = () => {
   const handleAddSection = (newSection: Section) => {
     if (!currentDate) return;
 
+    if (currentSections.some(section => section.name === newSection.name)) {
+      alert('Section already exists.');
+      return;
+    }
+    
     const dateString = currentDate.toISOString().split('T')[0];
     const updatedSections = [...currentSections, { ...newSection, text: '' }];
     
@@ -137,7 +142,7 @@ const JournalPage: React.FC = () => {
 
     const dateString = currentDate.toISOString().split('T')[0];
     const updatedSections = currentSections.map(section => 
-      section.name === sectionSelection.name 
+      section.name === sectionSelection.name
         ? { ...section, text } 
         : section
     );
