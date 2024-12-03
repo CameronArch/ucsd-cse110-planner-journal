@@ -48,7 +48,7 @@ export const TaskMenuContextProvider: React.FC<{children: React.ReactNode}> = ({
         // TODO: parse tasks and place in tasks
         const taskMap: Record<string, Task[]> = {};
         allTasks.data.forEach((task: any) => {
-            taskMap[task.date] = [...(taskMap[task.date] || []), task];
+            taskMap[task.date] = [...(taskMap[task.date] || []), {...task, start: task.startTime, end: task.endTime}];
         });
         setTasks(taskMap);
     }
