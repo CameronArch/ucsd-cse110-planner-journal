@@ -57,7 +57,7 @@ describe("Journal Page Functionality", () => {
             </JournalPageContext.Provider>
         );
 
-        const returnButton = screen.getByText("Return to Planner");
+        const returnButton = screen.getByText("Return to Planner (Save)");
         expect(returnButton).toBeInTheDocument();
 
         fireEvent.click(returnButton);

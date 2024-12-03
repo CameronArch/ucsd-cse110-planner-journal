@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { generateClient } from '@aws-amplify/api';
+import type { Schema } from "../../../amplify/data/resource";
+
+const client = generateClient<Schema>();
 
 interface Section {
     name: string;
@@ -39,6 +43,25 @@ export const JournalPageContextProvider = (props: any) => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const [currentDate, setCurrentDate] = React.useState<Date | null>(null);
     const [journalEntries, setJournalEntries] = React.useState<JournalEntriesMap>({});
+
+    const getJournalEntries = async () => {
+      const allJournalEntries = await client.models.JournalEntry.list();
+      const journalMap: Record<string, JournalEntry> = {};
+      allJournalEntries.data.forEach((e: any) => {
+        console.log(e)
+        if (journalMap[e.date]) {
+          journalMap[e.date].sections.push({name: e.name, color: e.color, text: e.entry});
+        } else {
+          journalMap[e.date] = {sections: [{name: e.name, color: e.color, text: e.entry}]}
+        }
+      });
+      setJournalEntries(journalMap);
+    }
+  
+    //get journal entries
+    useEffect(() => {
+      getJournalEntries();
+    }, []);
 
     return (
         <JournalPageContext.Provider 

@@ -3,6 +3,10 @@ import { useState } from "react";
 import CreateSection from "./Create-Section" 
 import { JournalPageContext } from './JournalPageContext';
 import SpeechRecognition , { useSpeechRecognition } from 'react-speech-recognition';
+import { generateClient } from '@aws-amplify/api';
+import type { Schema } from "../../../amplify/data/resource";
+
+const client = generateClient<Schema>();
 
 const micImage = '/MicImage.png';
 
@@ -156,9 +160,38 @@ const JournalPage: React.FC = () => {
     });
   };
 
+  const updateJournalEntries = async () => {
+    const dateString = currentDate?.toISOString().split('T')[0];
+    let response;
+    if (!dateString) return;
+    for (const j of journalEntries[dateString]?.sections || []) {
+      const test = await client.models.JournalEntry.get({id: dateString + j.name});
+      if (test) {
+        response = await client.models.JournalEntry.create({
+          id: dateString + j.name,
+          color: j.color,
+          name: j.name,
+          entry: j.text,
+          date: dateString,
+        })
+      } else {
+        response = await client.models.JournalEntry.update({
+          id: dateString + j.name,
+          color: j.color,
+          name: j.name,
+          entry: j.text,
+          date: dateString,
+        })
+      }
+    }
+    console.log(response);
+  }
+
   const handleReturn = () => {
+    // save entries to account
     setIsOpen(false);
     setCurrentDate(null);
+    updateJournalEntries();
   };
 
   function ReturnPlanner() {
@@ -181,7 +214,7 @@ const JournalPage: React.FC = () => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        Return to Planner
+        Return to Planner (Save)
       </button>
     );
   }
