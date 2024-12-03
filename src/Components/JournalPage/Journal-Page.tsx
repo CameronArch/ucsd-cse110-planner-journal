@@ -164,27 +164,27 @@ const JournalPage: React.FC = () => {
     const dateString = currentDate?.toISOString().split('T')[0];
     let response;
     if (!dateString) return;
-    for (const j of journalEntries[dateString]?.sections || []) {
-      const test = await client.models.JournalEntry.get({id: dateString + j.name});
-      if (test) {
-        response = await client.models.JournalEntry.create({
-          id: dateString + j.name,
-          color: j.color,
-          name: j.name,
-          entry: j.text,
+    for (const section of journalEntries[dateString]?.sections || []) {
+        const entryId = dateString + section.name;
+        const entryData = {
+          id: entryId,
+          color: section.color,
+          name: section.name,
+          entry: section.text,
           date: dateString,
-        })
-      } else {
-        response = await client.models.JournalEntry.update({
-          id: dateString + j.name,
-          color: j.color,
-          name: j.name,
-          entry: j.text,
-          date: dateString,
-        })
-      }
+        };
+    
+        // First check if entry exists
+        const existingEntry = await client.models.JournalEntry.get({ id: entryId });
+    
+    if (existingEntry) {
+      // If it exists, delete it first
+      await client.models.JournalEntry.delete({ id: entryId });
     }
-    console.log(response);
+    
+    // Create new entry
+    await client.models.JournalEntry.create(entryData);
+    }
   }
 
   const handleReturn = () => {
