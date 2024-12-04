@@ -67,18 +67,13 @@ interface JournalEntryButtonProps {
 
 //Create a button component that will be used to add a journal entry to DayObject
 const JournalEntryButton = ({currentDate}: JournalEntryButtonProps) => {
-   /*const color = ({ isActive }: { isActive: boolean }) => {
-        return(
-            <JournalEntryButton = {`JournalEntryButton ${isActive ? 'active' : 'inactive'}`}>
-
-            </JournalEntryButton>
-        )
-    }
-*/
-    //const isActive: boolean = true;
-    //const className: string = `button ${isActive ? 'active' : 'inactive'}`;
-
+  
     const journalPageContext = useContext(JournalPageContext);
+
+    
+const { journalEntries, setIsOpen, setCurrentDate } = useContext(JournalPageContext);
+const dateKey = currentDate.toISOString().split('T')[0];
+const hasEntry = !!journalEntries[dateKey]; // Check if there's an entry for the date
 
     const handleClick = () => {
         journalPageContext.setIsOpen(true);
@@ -88,7 +83,9 @@ const JournalEntryButton = ({currentDate}: JournalEntryButtonProps) => {
     return (
     <>
         <div>
-            <button className="journalEntryButton" onClick={handleClick}>Journal</button>
+            <button className="journalEntryButton" onClick={handleClick}  style={{
+                    backgroundColor: hasEntry ? 'orange' : '#007bff', // Change color if there's an entry
+                }}>Journal</button>
         </div>
     </>
     );
