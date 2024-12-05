@@ -1,97 +1,47 @@
+# Test Cases for Sign-Up Component
 
-# Test Cases for Login and SignUp Components
-
-This document describes the test cases for the `Login` and `SignUp` components in our app. Each test checks that these components are displaying the right elements and working as expected.
-
----
-
-## Contents
-
-- [Login Component](#login-component)
-  - [Test 1: Login Form Display](#test-1-login-form-display)
-  - [Test 2: Click to Sign Up](#test-2-click-to-sign-up)
-- [SignUp Component](#signup-component)
-  - [Test 1: Sign-Up Form Display](#test-1-sign-up-form-display)
-  - [Test 2: Click to Log In](#test-2-click-to-log-in)
+This document describes the test cases for the `SignUp` component, ensuring its functionality and user interface elements work as intended.
 
 ---
 
-## Login Component
+## **Test Case 1: Render Sign-Up Form**
 
-### Test 1: Login Form Display
+### **Objective:**
+To verify that the sign-up form renders all necessary elements correctly.
 
-- **Purpose**: Check that the `Login` component shows everything it should.
-- **Elements to Check**:
-  - "Log In" heading
-  - Username and Password input fields
-  - "Log In" button
-  - "Sign Up" link
-- **Code**:
-  ```typescript
-  test('renders the login form with username and password inputs', () => {
-    render(<Login goToSignUp={() => {}} />);
-    expect(screen.getByRole('heading', { name: 'Log In' })).toBeInTheDocument();
-    expect(screen.getByLabelText('Username')).toBeInTheDocument();
-    expect(screen.getByLabelText('Password')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Log In' })).toBeInTheDocument();
-    expect(screen.getByText('Sign Up')).toBeInTheDocument();
-  });
-  ```
-- **Expected Result**: The login form shows all the elements listed above.
+### **Steps:**
+1. Render the `SignUp` component.
+2. Check for the presence of the following:
+   - **Header**: "Sign Up".
+   - **Inputs**:
+     - `Create Username`.
+     - `Create Password`.
+   - **Button**: "Create Account".
+   - **Link**: "Back to Log In".
 
-### Test 2: Click to Sign Up
-
-- **Purpose**: Check that clicking "Sign Up" calls the `goToSignUp` function so we can go to the sign-up page.
-- **Code**:
-  ```typescript
-  test('calls goToSignUp when "Sign Up" link is clicked', () => {
-    const goToSignUpMock = jest.fn();
-    render(<Login goToSignUp={goToSignUpMock} />);
-    fireEvent.click(screen.getByText('Sign Up'));
-    expect(goToSignUpMock).toHaveBeenCalled();
-  });
-  ```
-- **Expected Result**: The `goToSignUp` function is called when "Sign Up" is clicked.
+### **Expected Result:**
+All elements are present and rendered correctly:
+- "Sign Up" header is displayed.
+- Input fields for username and password are visible.
+- A button labeled "Create Account" is present.
+- A link labeled "Back to Log In" is displayed.
 
 ---
 
-## SignUp Component
+## **Test Case 2: "Back to Log In" Functionality**
 
-### Test 1: Sign-Up Form Display
+### **Objective:**
+To ensure that the `Back to Log In` link functions correctly and calls the provided `setShowSignUp` function.
 
-- **Purpose**: Check that the `SignUp` component shows everything it should.
-- **Elements to Check**:
-  - "Sign Up" heading
-  - Create Username and Create Password input fields
-  - "Create Account" button
-  - "Back to Log In" link
-- **Code**:
-  ```typescript
-  test('renders the sign-up form with username and password inputs', () => {
-    render(<SignUp goToLogin={() => {}} />);
-    expect(screen.getByRole('heading', { name: 'Sign Up' })).toBeInTheDocument();
-    expect(screen.getByLabelText('Create Username')).toBeInTheDocument();
-    expect(screen.getByLabelText('Create Password')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Create Account' })).toBeInTheDocument();
-    expect(screen.getByText('Back to Log In')).toBeInTheDocument();
-  });
-  ```
-- **Expected Result**: The sign-up form shows all the elements listed above.
+### **Steps:**
+1. Render the `SignUp` component with a mock `setShowSignUp` function.
+2. Click the `Back to Log In` link.
 
-### Test 2: Click to Log In
-
-- **Purpose**: Check that clicking "Back to Log In" calls the `goToLogin` function so we can go back to the login page.
-- **Code**:
-  ```typescript
-  test('calls goToLogin when "Back to Log In" link is clicked', () => {
-    const goToLoginMock = jest.fn();
-    render(<SignUp goToLogin={goToLoginMock} />);
-    fireEvent.click(screen.getByText('Back to Log In'));
-    expect(goToLoginMock).toHaveBeenCalled();
-  });
-  ```
-- **Expected Result**: The `goToLogin` function is called when "Back to Log In" is clicked.
+### **Expected Result:**
+- The `setShowSignUp` mock function is called when the `Back to Log In` link is clicked.
 
 ---
 
-This document covers the basics of our test cases for the login and sign-up components, focusing on making sure everything displays properly and navigates correctly.
+## **Notes:**
+- These tests are written using React Testing Library and Jest.
+- Mock functions are used to simulate the behavior of the `setShowSignUp` callback.
